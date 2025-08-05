@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { SignUpForm } from '@/components/auth/SignUpForm';
@@ -8,6 +9,13 @@ import { Loader2, Heart, Shield, Users } from 'lucide-react';
 const Index = () => {
   const { user, profile, loading, signOut } = useAuth();
   const [showSignUp, setShowSignUp] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && profile) {
+      navigate('/dashboard');
+    }
+  }, [user, profile, navigate]);
 
   if (loading) {
     return (
@@ -67,58 +75,8 @@ const Index = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <Heart className="h-8 w-8 text-primary" />
-            <h1 className="text-accessible-xl font-bold text-primary">AgingCare+</h1>
-          </div>
-          <div className="flex items-center space-x-4">
-            <span className="text-accessible-base">Welcome, {profile.full_name}</span>
-            <Button variant="outline" onClick={signOut}>Sign Out</Button>
-          </div>
-        </div>
-      </header>
-      
-      <main className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <h2 className="text-accessible-2xl font-bold mb-4">
-            {profile.role === 'patient' && 'Your Health Dashboard'}
-            {profile.role === 'caregiver' && 'Caregiver Dashboard'}
-            {profile.role === 'provider' && 'Provider Dashboard'}
-          </h2>
-          <p className="text-accessible-lg text-muted-foreground mb-8">
-            Welcome to your personalized health management platform.
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="bg-card p-6 rounded-lg border">
-              <h3 className="text-accessible-xl font-semibold mb-2">Health Tracking</h3>
-              <p className="text-accessible-base text-muted-foreground">
-                Monitor vital signs and health metrics daily
-              </p>
-            </div>
-            
-            <div className="bg-card p-6 rounded-lg border">
-              <h3 className="text-accessible-xl font-semibold mb-2">Medications</h3>
-              <p className="text-accessible-base text-muted-foreground">
-                Track medications and receive reminders
-              </p>
-            </div>
-            
-            <div className="bg-card p-6 rounded-lg border">
-              <h3 className="text-accessible-xl font-semibold mb-2">Care Team</h3>
-              <p className="text-accessible-base text-muted-foreground">
-                Connect with caregivers and providers
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
+  // This should never render for authenticated users
+  return null;
 };
 
 export default Index;
