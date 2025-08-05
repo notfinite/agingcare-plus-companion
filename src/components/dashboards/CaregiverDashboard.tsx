@@ -18,52 +18,83 @@ export const CaregiverDashboard = () => {
           </p>
         </div>
 
-        {/* Quick Overview */}
+        {/* Caregiver Impact Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
+          <Card className="border-l-4 border-l-primary">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-accessible-base font-medium">Patients</CardTitle>
+              <CardTitle className="text-accessible-base font-medium">Care Recipients</CardTitle>
               <Users className="h-5 w-5 text-primary" />
             </CardHeader>
             <CardContent>
               <div className="text-accessible-xl font-bold">3</div>
-              <p className="text-accessible-sm text-muted-foreground">Under your care</p>
+              <p className="text-accessible-sm text-primary">Active patients</p>
+              <p className="text-accessible-xs text-muted-foreground">2 stable, 1 needs attention</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-health-warning">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-accessible-base font-medium">Active Alerts</CardTitle>
+              <CardTitle className="text-accessible-base font-medium">Priority Alerts</CardTitle>
               <AlertTriangle className="h-5 w-5 text-health-warning" />
             </CardHeader>
             <CardContent>
-              <div className="text-accessible-xl font-bold">2</div>
-              <p className="text-accessible-sm text-muted-foreground">Require attention</p>
+              <div className="text-accessible-xl font-bold">1</div>
+              <p className="text-accessible-sm text-health-warning">High priority</p>
+              <p className="text-accessible-xs text-muted-foreground">Mom's BP elevated</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-health-good">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-accessible-base font-medium">Vitals Check</CardTitle>
+              <CardTitle className="text-accessible-base font-medium">Health Trends</CardTitle>
               <Heart className="h-5 w-5 text-health-good" />
             </CardHeader>
             <CardContent>
-              <div className="text-accessible-xl font-bold">All Good</div>
-              <p className="text-accessible-sm text-muted-foreground">Last 24 hours</p>
+              <div className="text-accessible-xl font-bold">Improving</div>
+              <p className="text-accessible-sm text-health-good">Overall trend</p>
+              <p className="text-accessible-xs text-muted-foreground">85% metrics on target</p>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-l-4 border-l-health-excellent">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-accessible-base font-medium">Medications</CardTitle>
+              <CardTitle className="text-accessible-base font-medium">Care Coordination</CardTitle>
               <CheckCircle className="h-5 w-5 text-health-excellent" />
             </CardHeader>
             <CardContent>
-              <div className="text-accessible-xl font-bold">98%</div>
-              <p className="text-accessible-sm text-muted-foreground">Compliance rate</p>
+              <div className="text-accessible-xl font-bold">94%</div>
+              <p className="text-accessible-sm text-health-excellent">Medication adherence</p>
+              <p className="text-accessible-xs text-muted-foreground">Up 12% this month</p>
             </CardContent>
           </Card>
         </div>
+
+        {/* Care Impact Summary */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-accessible-lg">Your Care Impact This Month</CardTitle>
+            <CardDescription>How your support is improving health outcomes</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-4 bg-muted/50 rounded-lg">
+                <div className="text-accessible-2xl font-bold text-health-excellent">12</div>
+                <p className="text-accessible-base font-medium">Emergency Prevention</p>
+                <p className="text-accessible-sm text-muted-foreground">Early interventions that avoided ER visits</p>
+              </div>
+              <div className="text-center p-4 bg-muted/50 rounded-lg">
+                <div className="text-accessible-2xl font-bold text-secondary">89%</div>
+                <p className="text-accessible-base font-medium">Appointment Adherence</p>
+                <p className="text-accessible-sm text-muted-foreground">Helped schedule & remind</p>
+              </div>
+              <div className="text-center p-4 bg-muted/50 rounded-lg">
+                <div className="text-accessible-2xl font-bold text-primary">$2,340</div>
+                <p className="text-accessible-base font-medium">Healthcare Savings</p>
+                <p className="text-accessible-sm text-muted-foreground">Estimated cost reduction</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Main Widgets */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -7,6 +7,9 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
+import { CommunityHub } from "@/components/community/CommunityHub";
+import { AIRiskAssessment } from "@/components/ai/AIRiskAssessment";
+import { DeviceIntegration } from "@/components/devices/DeviceIntegration";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +23,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/community" element={<CommunityHub />} />
+            <Route path="/ai-assessment" element={<AIRiskAssessment />} />
+            <Route path="/devices" element={<DeviceIntegration />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
