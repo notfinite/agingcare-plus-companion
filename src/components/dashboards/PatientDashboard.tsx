@@ -124,6 +124,55 @@ export const PatientDashboard = () => {
         </div>
 
         <AppointmentsWidget />
+
+        {/* Health Interventions & Recommendations */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-accessible-lg">Personalized Health Recommendations</CardTitle>
+            <CardDescription>Evidence-based interventions to improve your health outcomes</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-6">
+              <div className="p-4 bg-health-excellent/5 border border-health-excellent/20 rounded-lg">
+                <h4 className="text-accessible-base font-medium text-health-excellent mb-3">🥗 Nutrition Interventions</h4>
+                <div className="space-y-2 text-accessible-sm">
+                  <p><strong>Plant-Based Mediterranean Diet:</strong> Studies show 23% reduction in diabetes complications</p>
+                  <p><strong>Target:</strong> 5 servings vegetables, 3 servings whole grains daily</p>
+                  <p><strong>Avoid:</strong> Processed meats, refined sugars, saturated fats &gt;10% calories</p>
+                  <p><strong>Your Progress:</strong> 85% compliant this week - excellent work!</p>
+                </div>
+              </div>
+              
+              <div className="p-4 bg-secondary/5 border border-secondary/20 rounded-lg">
+                <h4 className="text-accessible-base font-medium text-secondary mb-3">🏃‍♂️ Exercise Prescription</h4>
+                <div className="space-y-2 text-accessible-sm">
+                  <p><strong>Cardio Goal:</strong> 150 minutes moderate activity weekly (brisk walking)</p>
+                  <p><strong>Strength Training:</strong> 2x per week with resistance bands or light weights</p>
+                  <p><strong>Balance Work:</strong> 10 minutes daily to prevent falls</p>
+                  <p><strong>Your Achievement:</strong> 82% of weekly goal completed 🎯</p>
+                </div>
+              </div>
+              
+              <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <h4 className="text-accessible-base font-medium text-primary mb-3">💊 Medication Optimization</h4>
+                <div className="space-y-2 text-accessible-sm">
+                  <p><strong>Current Regimen:</strong> Working excellently - 96% adherence rate</p>
+                  <p><strong>Timing Tip:</strong> Take Metformin with meals to reduce GI side effects</p>
+                  <p><strong>Monitoring:</strong> Continue daily glucose checks, report patterns</p>
+                  <p><strong>Next Review:</strong> January 15th with Dr. Johnson</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-6 p-4 bg-gradient-to-r from-health-excellent/10 to-secondary/10 rounded-lg">
+              <h5 className="text-accessible-base font-medium mb-2">🏆 Your Health Achievements</h5>
+              <p className="text-accessible-sm text-muted-foreground">
+                This month you've reduced your diabetes risk by 18% through consistent medication adherence and healthy lifestyle choices. 
+                Your blood pressure has improved to optimal levels, and your energy is at its highest in years!
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </AppLayout>
   );
