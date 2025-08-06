@@ -5,7 +5,7 @@ import { AlertsWidget } from '@/components/alerts/AlertsWidget';
 import { MedicationTrackingWidget } from '@/components/caregiver/MedicationTrackingWidget';
 import { HealthSummaryWidget } from '@/components/caregiver/HealthSummaryWidget';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, AlertTriangle, Heart, CheckCircle } from 'lucide-react';
+import { Users, AlertTriangle, Heart, CheckCircle, Shield, TrendingUp, Clock, Star } from 'lucide-react';
 
 export const CaregiverDashboard = () => {
   return (
@@ -20,51 +20,83 @@ export const CaregiverDashboard = () => {
 
         {/* Caregiver Impact Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-primary">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Care Recipients</CardTitle>
-              <Users className="h-5 w-5 text-primary" />
+              <div className="p-2 bg-primary/20 rounded-lg">
+                <Users className="h-5 w-5 text-primary" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">3</div>
-              <p className="text-accessible-sm text-primary">Active patients</p>
-              <p className="text-accessible-xs text-muted-foreground">2 stable, 1 needs attention</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-primary">3</div>
+              <div className="flex items-center gap-1">
+                <Heart className="h-3 w-3 text-primary" />
+                <p className="text-accessible-sm text-primary font-medium">Active patients</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <CheckCircle className="h-3 w-3" />
+                2 stable, 1 needs attention
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-health-warning">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-health-warning/10 to-health-warning/5 border-health-warning/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Priority Alerts</CardTitle>
-              <AlertTriangle className="h-5 w-5 text-health-warning" />
+              <div className="p-2 bg-health-warning/20 rounded-lg animate-pulse">
+                <AlertTriangle className="h-5 w-5 text-health-warning" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">1</div>
-              <p className="text-accessible-sm text-health-warning">High priority</p>
-              <p className="text-accessible-xs text-muted-foreground">Mom's BP elevated</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-health-warning">1</div>
+              <div className="flex items-center gap-1">
+                <Clock className="h-3 w-3 text-health-warning" />
+                <p className="text-accessible-sm text-health-warning font-medium">High priority</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <AlertTriangle className="h-3 w-3" />
+                Mom's BP elevated (156/92)
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-health-good">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-health-good/10 to-health-good/5 border-health-good/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Health Trends</CardTitle>
-              <Heart className="h-5 w-5 text-health-good" />
+              <div className="p-2 bg-health-good/20 rounded-lg">
+                <TrendingUp className="h-5 w-5 text-health-good" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">Improving</div>
-              <p className="text-accessible-sm text-health-good">Overall trend</p>
-              <p className="text-accessible-xs text-muted-foreground">85% metrics on target</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-health-good">Improving</div>
+              <div className="flex items-center gap-1">
+                <Star className="h-3 w-3 text-health-good" />
+                <p className="text-accessible-sm text-health-good font-medium">Overall trend</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                85% metrics on target (+8% this week)
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-health-excellent">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-health-excellent/10 to-health-excellent/5 border-health-excellent/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Care Coordination</CardTitle>
-              <CheckCircle className="h-5 w-5 text-health-excellent" />
+              <div className="p-2 bg-health-excellent/20 rounded-lg">
+                <Shield className="h-5 w-5 text-health-excellent" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">94%</div>
-              <p className="text-accessible-sm text-health-excellent">Medication adherence</p>
-              <p className="text-accessible-xs text-muted-foreground">Up 12% this month</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-health-excellent">94%</div>
+              <div className="flex items-center gap-1">
+                <CheckCircle className="h-3 w-3 text-health-excellent" />
+                <p className="text-accessible-sm text-health-excellent font-medium">Medication adherence</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                Up 12% this month (excellent!)
+              </p>
             </CardContent>
           </Card>
         </div>

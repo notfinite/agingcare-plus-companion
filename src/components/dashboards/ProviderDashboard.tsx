@@ -6,7 +6,7 @@ import { ClinicalAlertsWidget } from '@/components/provider/ClinicalAlertsWidget
 import { AnalyticsWidget } from '@/components/provider/AnalyticsWidget';
 import { TelehealthWidget } from '@/components/telehealth/TelehealthWidget';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Calendar, TrendingUp, Video, AlertTriangle } from 'lucide-react';
+import { Users, Calendar, TrendingUp, Video, AlertTriangle, Activity, Heart, DollarSign, Award, CheckCircle, BarChart3 } from 'lucide-react';
 
 export const ProviderDashboard = () => {
   return (
@@ -21,51 +21,83 @@ export const ProviderDashboard = () => {
 
         {/* Population Health Metrics - 1000+ Patients */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-primary">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Patient Panel</CardTitle>
-              <Users className="h-5 w-5 text-primary" />
+              <div className="p-2 bg-primary/20 rounded-lg">
+                <Users className="h-5 w-5 text-primary" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">1,247</div>
-              <p className="text-accessible-sm text-primary">Active chronic patients</p>
-              <p className="text-accessible-xs text-muted-foreground">+47 new this month</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-primary">1,247</div>
+              <div className="flex items-center gap-1">
+                <Activity className="h-3 w-3 text-primary" />
+                <p className="text-accessible-sm text-primary font-medium">Active chronic patients</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                +47 new this month (↑3.9%)
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-health-warning">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-health-warning/10 to-health-warning/5 border-health-warning/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Risk Stratification</CardTitle>
-              <TrendingUp className="h-5 w-5 text-health-warning" />
+              <div className="p-2 bg-health-warning/20 rounded-lg">
+                <AlertTriangle className="h-5 w-5 text-health-warning" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">23%</div>
-              <p className="text-accessible-sm text-health-warning">High-risk patients</p>
-              <p className="text-accessible-xs text-muted-foreground">287 need intervention</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-health-warning">23%</div>
+              <div className="flex items-center gap-1">
+                <BarChart3 className="h-3 w-3 text-health-warning" />
+                <p className="text-accessible-sm text-health-warning font-medium">High-risk patients</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <Users className="h-3 w-3" />
+                287 need intervention (-5% vs last month)
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-health-excellent">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-health-excellent/10 to-health-excellent/5 border-health-excellent/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Quality Metrics</CardTitle>
-              <Calendar className="h-5 w-5 text-health-excellent" />
+              <div className="p-2 bg-health-excellent/20 rounded-lg">
+                <Award className="h-5 w-5 text-health-excellent" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">91.2%</div>
-              <p className="text-accessible-sm text-health-excellent">Care quality score</p>
-              <p className="text-accessible-xs text-muted-foreground">Above national avg (87%)</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-health-excellent">91.2%</div>
+              <div className="flex items-center gap-1">
+                <CheckCircle className="h-3 w-3 text-health-excellent" />
+                <p className="text-accessible-sm text-health-excellent font-medium">Care quality score</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                Above national avg (87%)
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-secondary">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Cost Efficiency</CardTitle>
-              <Video className="h-5 w-5 text-secondary" />
+              <div className="p-2 bg-secondary/20 rounded-lg">
+                <DollarSign className="h-5 w-5 text-secondary" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">$1.2M</div>
-              <p className="text-accessible-sm text-secondary">Savings this year</p>
-              <p className="text-accessible-xs text-muted-foreground">From preventive care</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-secondary">$1.2M</div>
+              <div className="flex items-center gap-1">
+                <Heart className="h-3 w-3 text-secondary" />
+                <p className="text-accessible-sm text-secondary font-medium">Savings this year</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                From preventive care (+18% efficiency)
+              </p>
             </CardContent>
           </Card>
         </div>

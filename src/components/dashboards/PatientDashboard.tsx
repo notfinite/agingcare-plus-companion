@@ -6,7 +6,7 @@ import { AppointmentsWidget } from '@/components/appointments/AppointmentsWidget
 import { AlertsWidget } from '@/components/alerts/AlertsWidget';
 import { VitalsChart } from '@/components/health/VitalsChart';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Heart, Activity, Pill, Calendar, Brain } from 'lucide-react';
+import { Heart, Activity, Pill, Calendar, Brain, TrendingUp, Target, Award, CheckCircle, Star, Shield } from 'lucide-react';
 
 export const PatientDashboard = () => {
   return (
@@ -21,51 +21,83 @@ export const PatientDashboard = () => {
 
         {/* Health Summary Cards - Patient Focused Outcomes */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="border-l-4 border-l-health-good">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-health-good/10 to-health-good/5 border-health-good/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Today's BP</CardTitle>
-              <Heart className="h-5 w-5 text-health-good" />
+              <div className="p-2 bg-health-good/20 rounded-lg">
+                <Heart className="h-5 w-5 text-health-good" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">118/76</div>
-              <p className="text-accessible-sm text-health-good">Within target range</p>
-              <p className="text-accessible-xs text-muted-foreground">7-day avg: 122/78</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-health-good">118/76</div>
+              <div className="flex items-center gap-1">
+                <CheckCircle className="h-3 w-3 text-health-good" />
+                <p className="text-accessible-sm text-health-good font-medium">Within target range</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                7-day avg: 122/78 (↓4mmHg)
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-health-excellent">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-health-excellent/10 to-health-excellent/5 border-health-excellent/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Heart Rate</CardTitle>
-              <Activity className="h-5 w-5 text-health-excellent" />
+              <div className="p-2 bg-health-excellent/20 rounded-lg">
+                <Activity className="h-5 w-5 text-health-excellent" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">68 BPM</div>
-              <p className="text-accessible-sm text-health-excellent">Excellent resting rate</p>
-              <p className="text-accessible-xs text-muted-foreground">Improved from 74 BPM</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-health-excellent">68 BPM</div>
+              <div className="flex items-center gap-1">
+                <Star className="h-3 w-3 text-health-excellent" />
+                <p className="text-accessible-sm text-health-excellent font-medium">Excellent resting rate</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                Improved from 74 BPM (↓6 BPM)
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-secondary">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Medication Adherence</CardTitle>
-              <Pill className="h-5 w-5 text-secondary" />
+              <div className="p-2 bg-secondary/20 rounded-lg">
+                <Pill className="h-5 w-5 text-secondary" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">96%</div>
-              <p className="text-accessible-sm text-secondary">This month</p>
-              <p className="text-accessible-xs text-muted-foreground">Next: Metformin at 2:00 PM</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-secondary">96%</div>
+              <div className="flex items-center gap-1">
+                <Shield className="h-3 w-3 text-secondary" />
+                <p className="text-accessible-sm text-secondary font-medium">This month</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <Calendar className="h-3 w-3" />
+                Next: Metformin at 2:00 PM
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-health-good">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <Card className="card-premium hover-lift bg-gradient-to-br from-primary/10 to-primary/5 border-primary/30">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-accessible-base font-medium">Health Score</CardTitle>
-              <Brain className="h-5 w-5 text-health-good" />
+              <div className="p-2 bg-primary/20 rounded-lg">
+                <Brain className="h-5 w-5 text-primary" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-accessible-xl font-bold">8.2/10</div>
-              <p className="text-accessible-sm text-health-good">Stable condition</p>
-              <p className="text-accessible-xs text-muted-foreground">Diabetes well-managed</p>
+            <CardContent className="space-y-2">
+              <div className="text-accessible-xl font-bold text-primary">8.2/10</div>
+              <div className="flex items-center gap-1">
+                <Award className="h-3 w-3 text-primary" />
+                <p className="text-accessible-sm text-primary font-medium">Stable condition</p>
+              </div>
+              <p className="text-accessible-xs text-muted-foreground flex items-center gap-1">
+                <Target className="h-3 w-3" />
+                Diabetes well-managed
+              </p>
             </CardContent>
           </Card>
         </div>
