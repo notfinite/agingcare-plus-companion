@@ -397,7 +397,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      find_or_create_patient_by_email: {
+        Args: {
+          patient_email: string
+          patient_name: string
+          relationship_type: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

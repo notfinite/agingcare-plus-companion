@@ -151,9 +151,25 @@ export const AlertsWidget = () => {
       <CardContent>
         <div className="space-y-3">
           {alerts.length === 0 ? (
-            <p className="text-accessible-base text-muted-foreground text-center py-8">
-              No alerts at this time. We'll notify you when something needs your attention.
-            </p>
+            <div className="text-center py-12">
+              <div className="p-4 bg-health-excellent/20 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <CheckCircle className="h-8 w-8 text-health-excellent" />
+              </div>
+              <h3 className="text-accessible-lg font-medium mb-2">All Clear!</h3>
+              <p className="text-accessible-base text-muted-foreground mb-4">
+                No alerts at this time. Your health metrics are looking good.
+              </p>
+              <div className="flex items-center justify-center gap-4 text-accessible-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <Bell className="h-4 w-4" />
+                  <span>Monitoring active</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <CheckCircle className="h-4 w-4" />
+                  <span>24/7 protection</span>
+                </div>
+              </div>
+            </div>
           ) : (
             alerts.map((alert) => (
               <div

@@ -2,7 +2,21 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Heart, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { 
+  Heart, 
+  AlertTriangle, 
+  CheckCircle, 
+  Clock, 
+  TrendingUp,
+  Activity,
+  Phone,
+  MessageCircle,
+  Target,
+  Zap,
+  Award,
+  Calendar
+} from 'lucide-react';
 
 export const PatientsOverview = () => {
   const patients = [
@@ -115,11 +129,68 @@ export const PatientsOverview = () => {
           </div>
         ))}
         
-        <div className="mt-4 p-4 bg-primary/5 rounded-lg">
-          <h5 className="text-accessible-base font-medium text-primary mb-2">🎯 Your Care Impact</h5>
-          <p className="text-accessible-sm text-muted-foreground">
-            This week you've helped prevent 2 potential emergencies and improved medication adherence by 15%. Your dedication is making a real difference in their health outcomes!
-          </p>
+        {/* Quick Actions */}
+        <div className="mt-6 grid grid-cols-2 gap-3">
+          <Button variant="outline" className="flex items-center gap-2 h-12">
+            <Phone className="h-4 w-4" />
+            Emergency Call
+          </Button>
+          <Button variant="outline" className="flex items-center gap-2 h-12">
+            <MessageCircle className="h-4 w-4" />
+            Send Reminder
+          </Button>
+        </div>
+
+        {/* Care Impact Insights */}
+        <div className="mt-6 space-y-4">
+          <div className="p-4 bg-gradient-to-r from-health-excellent/10 to-health-good/10 rounded-lg border border-health-excellent/20">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-health-excellent/20 rounded-lg">
+                <Target className="h-5 w-5 text-health-excellent" />
+              </div>
+              <div className="flex-1">
+                <h5 className="text-accessible-base font-medium text-health-excellent mb-1">🎯 Impact This Week</h5>
+                <p className="text-accessible-sm text-muted-foreground mb-3">
+                  Prevented 2 emergencies • Improved medication adherence by 15%
+                </p>
+                <div className="flex items-center gap-4 text-accessible-xs">
+                  <div className="flex items-center gap-1">
+                    <Zap className="h-3 w-3 text-health-warning" />
+                    <span>3 Early Interventions</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Award className="h-3 w-3 text-primary" />
+                    <span>Care Excellence Score: 94%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-primary/20 rounded-lg">
+                <Calendar className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h5 className="text-accessible-base font-medium text-primary mb-1">📋 Upcoming Tasks</h5>
+                <div className="space-y-2 text-accessible-sm">
+                  <div className="flex items-center justify-between">
+                    <span>Mom's BP check (2:00 PM)</span>
+                    <Badge variant="outline" className="text-xs">Today</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Dad's cardiology appointment</span>
+                    <Badge variant="outline" className="text-xs">Tomorrow</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Aunt Mary's medication refill</span>
+                    <Badge variant="outline" className="text-xs">Friday</Badge>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

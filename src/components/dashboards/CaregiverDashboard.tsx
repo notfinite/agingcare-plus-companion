@@ -4,6 +4,8 @@ import { PatientsOverview } from '@/components/caregiver/PatientsOverview';
 import { AlertsWidget } from '@/components/alerts/AlertsWidget';
 import { MedicationTrackingWidget } from '@/components/caregiver/MedicationTrackingWidget';
 import { HealthSummaryWidget } from '@/components/caregiver/HealthSummaryWidget';
+import { PatientManagement } from '@/components/patients/PatientManagement';
+import { ActionableInsights } from '@/components/insights/ActionableInsights';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, AlertTriangle, Heart, CheckCircle, Shield, TrendingUp, Clock, Star } from 'lucide-react';
 
@@ -138,6 +140,12 @@ export const CaregiverDashboard = () => {
           <MedicationTrackingWidget />
           <HealthSummaryWidget />
         </div>
+
+        {/* Patient Management */}
+        <PatientManagement />
+
+        {/* Actionable Insights */}
+        <ActionableInsights role="caregiver" />
       </div>
     </AppLayout>
   );

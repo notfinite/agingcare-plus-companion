@@ -232,9 +232,29 @@ export const HealthMetricsWidget = () => {
       <CardContent>
         <div className="space-y-4">
           {metrics.length === 0 ? (
-            <p className="text-accessible-base text-muted-foreground text-center py-8">
-              No health metrics recorded yet. Start tracking your vitals!
-            </p>
+            <div className="text-center py-12">
+              <div className="p-4 bg-primary/20 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Activity className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-accessible-lg font-medium mb-2">Start Your Health Journey</h3>
+              <p className="text-accessible-base text-muted-foreground mb-6">
+                Track your vitals to get personalized insights and recommendations for better health outcomes.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                {metricTypes.slice(0, 3).map((type) => {
+                  const Icon = type.icon;
+                  return (
+                    <div key={type.value} className="text-center p-3 bg-muted/50 rounded-lg">
+                      <Icon className="h-6 w-6 text-primary mx-auto mb-2" />
+                      <p className="text-accessible-sm font-medium">{type.label}</p>
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="text-accessible-sm text-muted-foreground">
+                💡 Tip: Regular monitoring helps detect health changes early
+              </p>
+            </div>
           ) : (
             metrics.map((metric) => {
               const Icon = getMetricIcon(metric.metric_type);
