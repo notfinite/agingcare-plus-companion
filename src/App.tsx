@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import { CommunityHub } from "@/components/community/CommunityHub";
 import { AIRiskAssessment } from "@/components/ai/AIRiskAssessment";
 import { DeviceIntegration } from "@/components/devices/DeviceIntegration";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/onboarding" element={<OnboardingFlow />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/community" element={<CommunityHub />} />
             <Route path="/ai-assessment" element={<AIRiskAssessment />} />

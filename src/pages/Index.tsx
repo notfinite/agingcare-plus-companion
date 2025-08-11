@@ -13,7 +13,13 @@ const Index = () => {
     if (selectedPersona) {
       // Store selected persona in localStorage for demo purposes
       localStorage.setItem('demoPersona', selectedPersona);
-      navigate('/dashboard');
+      // Check if onboarding has been completed
+      const onboardingCompleted = localStorage.getItem('onboardingCompleted');
+      if (!onboardingCompleted) {
+        navigate('/onboarding');
+      } else {
+        navigate('/dashboard');
+      }
     }
   };
 
