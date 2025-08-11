@@ -15,6 +15,9 @@ serve(async (req) => {
     const { message, userRole = 'patient', context = {} } = await req.json();
     
     const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+    console.log('API Key exists:', !!OPENAI_API_KEY);
+    console.log('API Key length:', OPENAI_API_KEY ? OPENAI_API_KEY.length : 0);
+    
     if (!OPENAI_API_KEY) {
       throw new Error('OpenAI API key not configured');
     }
@@ -59,7 +62,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-2025-04-14',
+        model: 'gpt-4o-mini',
         messages: [
           { 
             role: 'system', 
@@ -73,7 +76,10 @@ serve(async (req) => {
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('OpenAI API Response:', response.status, response.statusText);
+      console.error('OpenAI API Error Body:', errorText);
+      throw new Error(`OpenAI API error: ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
