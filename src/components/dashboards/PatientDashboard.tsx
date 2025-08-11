@@ -2,9 +2,12 @@ import React from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { HealthMetricsWidget } from '@/components/health/HealthMetricsWidget';
 import { MedicationWidget } from '@/components/medication/MedicationWidget';
+import { SmartMedicationReminder } from '@/components/medication/SmartMedicationReminder';
 import { AppointmentsWidget } from '@/components/appointments/AppointmentsWidget';
 import { AlertsWidget } from '@/components/alerts/AlertsWidget';
 import { VitalsChart } from '@/components/health/VitalsChart';
+import { AIHealthAssistant } from '@/components/ai/AIHealthAssistant';
+import { FamilyMessaging } from '@/components/communication/FamilyMessaging';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, Activity, Pill, Calendar, Brain, TrendingUp, Target, Award, CheckCircle, Star, Shield } from 'lucide-react';
 
@@ -147,7 +150,10 @@ export const PatientDashboard = () => {
         {/* Main Widgets */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <HealthMetricsWidget />
-          <MedicationWidget />
+          <div className="space-y-6">
+            <MedicationWidget />
+            <SmartMedicationReminder />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -155,7 +161,16 @@ export const PatientDashboard = () => {
           <AlertsWidget />
         </div>
 
-        <AppointmentsWidget />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <AppointmentsWidget />
+          <AIHealthAssistant userRole="patient" context={{
+            vitals: { bloodPressure: '128/82', heartRate: '72' },
+            medications: ['Lisinopril', 'Metformin']
+          }} />
+        </div>
+
+        {/* Communication Hub */}
+        <FamilyMessaging />
 
         {/* Health Interventions & Recommendations */}
         <Card>

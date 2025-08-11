@@ -1,1 +1,28 @@
 project_id = "ecsajdzvwywimkbospmr"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[auth]
+enabled = true
+port = 9999
+site_url = "https://54c363ae-de8e-488d-9152-4d65a4775613.lovableproject.com"
+additional_redirect_urls = ["https://localhost:3000"]
+jwt_expiry = 3600
+enable_anonymous_sign_ins = false
+disable_signup = true
+enable_signup = false
+enable_confirmations = false
+
+[functions.ai-health-assistant]
+verify_jwt = false
+
+[functions.text-to-speech]
+verify_jwt = false
+
+[functions.voice-to-text]
+verify_jwt = false
