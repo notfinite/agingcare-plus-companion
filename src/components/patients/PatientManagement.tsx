@@ -125,10 +125,19 @@ export const PatientManagement = () => {
   };
 
   const addPatient = async () => {
-    if (!profile || !newPatient.full_name || !newPatient.email) {
+    if (!profile || !newPatient.full_name || !newPatient.email || !newPatient.relationship_type) {
       toast({
         title: "Missing information",
-        description: "Please fill in required fields.",
+        description: "Please fill in all required fields (name, email, and relationship).",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!newPatient.email.includes('@')) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
         variant: "destructive",
       });
       return;
@@ -169,6 +178,10 @@ export const PatientManagement = () => {
   };
 
   const removePatient = async (relationshipId: string, patientName: string) => {
+    if (!window.confirm(`Are you sure you want to remove ${patientName} from your patient list? This action cannot be undone.`)) {
+      return;
+    }
+    
     try {
       const { error } = await supabase
         .from('caregiver_patient_relationships')

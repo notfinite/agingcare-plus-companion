@@ -1,7 +1,8 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Heart, Bell, Menu, Settings, LogOut } from 'lucide-react';
+import { Heart, Bell, Menu, Settings, LogOut, ArrowLeft } from 'lucide-react';
 import { EmergencyButton } from '@/components/emergency/EmergencyButton';
 import {
   DropdownMenu,
@@ -15,6 +16,7 @@ interface AppLayoutProps {
 }
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+  const navigate = useNavigate();
   const { profile, signOut } = useAuth();
 
   return (
@@ -22,6 +24,16 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       <header className="border-b bg-card sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => navigate('/')}
+              className="mr-2 hover-scale"
+              aria-label="Return to home"
+            >
+              <ArrowLeft className="h-4 w-4 mr-1" />
+              Home
+            </Button>
             <Heart className="h-8 w-8 text-primary" />
             <h1 className="text-accessible-xl font-bold text-primary">AgingCare+</h1>
           </div>
