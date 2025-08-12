@@ -4,6 +4,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { SustainabilityRecommendations } from './SustainabilityRecommendations';
 import { 
   Leaf, 
   Car, 
@@ -210,6 +211,7 @@ export const SustainabilityDashboard = () => {
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="recommendations">AI Recommendations</TabsTrigger>
           <TabsTrigger value="categories">By Category</TabsTrigger>
           <TabsTrigger value="goals">Goals</TabsTrigger>
           <TabsTrigger value="actions">Quick Actions</TabsTrigger>
@@ -277,6 +279,10 @@ export const SustainabilityDashboard = () => {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="recommendations" className="space-y-4">
+          <SustainabilityRecommendations />
         </TabsContent>
 
         <TabsContent value="categories" className="space-y-4">
