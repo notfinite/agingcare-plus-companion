@@ -163,9 +163,19 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
 
     } catch (error) {
       console.error('Error starting recording:', error);
+      let errorMessage = "Could not access microphone";
+      
+      if (error.name === 'NotAllowedError') {
+        errorMessage = "Microphone access denied. Please allow microphone access and try again.";
+      } else if (error.name === 'NotFoundError') {
+        errorMessage = "No microphone found. Please check your device and try again.";
+      } else if (error.name === 'NotSupportedError') {
+        errorMessage = "Audio recording not supported on this device.";
+      }
+      
       toast({
         title: "Error",
-        description: "Could not access microphone",
+        description: errorMessage,
         variant: "destructive",
       });
     }
