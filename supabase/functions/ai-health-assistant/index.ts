@@ -16,7 +16,10 @@ serve(async (req) => {
     
     const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
     console.log('API Key exists:', !!OPENAI_API_KEY);
-    console.log('API Key length:', OPENAI_API_KEY ? OPENAI_API_KEY.length : 0);
+    if (OPENAI_API_KEY) {
+      console.log('API Key prefix:', OPENAI_API_KEY.substring(0, 7));
+      console.log('API Key length:', OPENAI_API_KEY.length);
+    }
     
     if (!OPENAI_API_KEY) {
       throw new Error('OpenAI API key not configured');
