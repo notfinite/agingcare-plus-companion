@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
+import { signUpSchema, type SignUpFormData } from '@/lib/validation';
+import { z } from 'zod';
 
 interface SignUpFormProps {
   onToggleForm: () => void;
@@ -29,24 +31,26 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ onToggleForm }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-    
     setLoading(true);
     setError('');
 
     try {
-      await signUp(formData.email, formData.password, {
-        full_name: formData.full_name,
-        role: formData.role,
-        phone: formData.phone,
-        emergency_contact_name: formData.emergency_contact_name,
-        emergency_contact_phone: formData.emergency_contact_phone,
+      // Validate form data with Zod
+      const validatedData = signUpSchema.parse(formData);
+      
+      await signUp(validatedData.email, validatedData.password, {
+        full_name: validatedData.full_name,
+        role: validatedData.role,
+        phone: validatedData.phone || '',
+        emergency_contact_name: validatedData.emergency_contact_name || '',
+        emergency_contact_phone: validatedData.emergency_contact_phone || '',
       });
     } catch (err: any) {
-      setError(err.message || 'An error occurred during registration');
+      if (err instanceof z.ZodError) {
+        setError(err.issues[0]?.message || 'Please check your input and try again');
+      } else {
+        setError(err.message || 'An error occurred during registration');
+      }
     } finally {
       setLoading(false);
     }

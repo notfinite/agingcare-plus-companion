@@ -6,6 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
+import { loginSchema, type LoginFormData } from '@/lib/validation';
+import { z } from 'zod';
 
 interface LoginFormProps {
   onToggleForm: () => void;
@@ -25,9 +27,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleForm }) => {
     setError('');
 
     try {
-      await signIn(email, password);
+      // Validate form data with Zod
+      const validatedData = loginSchema.parse({ email, password });
+      
+      await signIn(validatedData.email, validatedData.password);
     } catch (err: any) {
-      setError(err.message || 'An error occurred during login');
+      if (err instanceof z.ZodError) {
+        setError(err.issues[0]?.message || 'Please check your input and try again');
+      } else {
+        setError(err.message || 'An error occurred during login');
+      }
     } finally {
       setLoading(false);
     }
