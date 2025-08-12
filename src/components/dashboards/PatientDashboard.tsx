@@ -8,6 +8,7 @@ import { AlertsWidget } from '@/components/alerts/AlertsWidget';
 import { VitalsChart } from '@/components/health/VitalsChart';
 import { AIHealthAssistant } from '@/components/ai/AIHealthAssistant';
 import { FamilyMessaging } from '@/components/communication/FamilyMessaging';
+import { SustainabilityWidget } from '@/components/sustainability/SustainabilityWidget';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Heart, Activity, Pill, Calendar, Brain, TrendingUp, Target, Award, CheckCircle, Star, Shield } from 'lucide-react';
 
@@ -169,8 +170,15 @@ export const PatientDashboard = () => {
           }} />
         </div>
 
-        {/* Communication Hub */}
-        <FamilyMessaging />
+        {/* Sustainability & Communication */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1">
+            <SustainabilityWidget />
+          </div>
+          <div className="lg:col-span-2">
+            <FamilyMessaging />
+          </div>
+        </div>
 
         {/* Health Interventions & Recommendations */}
         <Card>

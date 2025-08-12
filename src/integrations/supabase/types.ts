@@ -392,6 +392,84 @@ export type Database = {
         }
         Relationships: []
       }
+      sustainability_goals: {
+        Row: {
+          achievement_date: string | null
+          created_at: string
+          current_value: number | null
+          goal_type: string
+          id: string
+          is_achieved: boolean | null
+          patient_id: string
+          target_date: string
+          target_value: number
+          updated_at: string
+        }
+        Insert: {
+          achievement_date?: string | null
+          created_at?: string
+          current_value?: number | null
+          goal_type: string
+          id?: string
+          is_achieved?: boolean | null
+          patient_id: string
+          target_date: string
+          target_value: number
+          updated_at?: string
+        }
+        Update: {
+          achievement_date?: string | null
+          created_at?: string
+          current_value?: number | null
+          goal_type?: string
+          id?: string
+          is_achieved?: boolean | null
+          patient_id?: string
+          target_date?: string
+          target_value?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sustainability_metrics: {
+        Row: {
+          carbon_footprint_kg: number
+          carbon_saved_kg: number | null
+          category: string
+          created_at: string
+          data: Json | null
+          green_alternative_used: boolean | null
+          id: string
+          metric_type: string
+          patient_id: string
+          recorded_at: string
+        }
+        Insert: {
+          carbon_footprint_kg: number
+          carbon_saved_kg?: number | null
+          category: string
+          created_at?: string
+          data?: Json | null
+          green_alternative_used?: boolean | null
+          id?: string
+          metric_type: string
+          patient_id: string
+          recorded_at?: string
+        }
+        Update: {
+          carbon_footprint_kg?: number
+          carbon_saved_kg?: number | null
+          category?: string
+          created_at?: string
+          data?: Json | null
+          green_alternative_used?: boolean | null
+          id?: string
+          metric_type?: string
+          patient_id?: string
+          recorded_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

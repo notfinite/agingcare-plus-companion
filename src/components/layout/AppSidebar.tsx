@@ -12,7 +12,8 @@ import {
   HelpCircle,
   Stethoscope,
   UserPlus,
-  BarChart3
+  BarChart3,
+  Leaf
 } from 'lucide-react';
 import {
   Sidebar,
@@ -82,6 +83,13 @@ const navigationItems: NavigationItem[] = [
     url: '/devices',
     icon: Activity,
     description: 'Connected health devices',
+    roles: ['patient', 'caregiver', 'provider']
+  },
+  {
+    title: 'Sustainability',
+    url: '/sustainability',
+    icon: Leaf,
+    description: 'Green health choices',
     roles: ['patient', 'caregiver', 'provider']
   },
   {

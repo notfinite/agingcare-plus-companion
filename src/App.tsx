@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import Sustainability from "./pages/Sustainability";
 import NotFound from "./pages/NotFound";
 import { CommunityHub } from "@/components/community/CommunityHub";
 import { AIRiskAssessment } from "@/components/ai/AIRiskAssessment";
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/onboarding" element={<OnboardingFlow />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/sustainability" element={<Sustainability />} />
             <Route path="/community" element={<CommunityHub />} />
             <Route path="/ai-assessment" element={<AIRiskAssessment />} />
             <Route path="/devices" element={<DeviceIntegration />} />
