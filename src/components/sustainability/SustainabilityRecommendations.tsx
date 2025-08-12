@@ -196,13 +196,13 @@ export const SustainabilityRecommendations = () => {
   const generateAIRecommendations = async () => {
     setGeneratingRecommendations(true);
     try {
-      const { data, error } = await supabase.functions.invoke('ai-health-assistant', {
+      const { data, error } = await supabase.functions.invoke('sustainability-ai-advisor', {
         body: {
-          message: `Based on my role as a ${userProfile?.role} in healthcare, suggest 3 specific, actionable ways I can reduce my carbon footprint while maintaining or improving care quality. Focus on practical interventions with measurable CO2 impact. Include specific numbers where possible (like water usage, emissions saved, etc.).`,
+          userAction: `As a ${userProfile?.role}, I want specific recommendations to reduce my carbon footprint. Give me 3 actionable interventions with exact CO2 savings calculations. Focus on: 1) Food choices (like beef vs vegetables with water usage), 2) Healthcare delivery methods, 3) Transportation/energy use. Include measurable impact data.`,
           userRole: userProfile?.role,
           context: {
-            sustainabilityFocus: true,
-            age: userProfile?.age
+            age: userProfile?.age,
+            current_practices: recommendations.map(r => r.category)
           }
         }
       });

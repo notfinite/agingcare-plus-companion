@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SustainabilityRecommendations } from './SustainabilityRecommendations';
+import { CarbonCalculator } from './CarbonCalculator';
 import { 
   Leaf, 
   Car, 
@@ -282,7 +283,10 @@ export const SustainabilityDashboard = () => {
         </TabsContent>
 
         <TabsContent value="recommendations" className="space-y-4">
-          <SustainabilityRecommendations />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <SustainabilityRecommendations />
+            <CarbonCalculator />
+          </div>
         </TabsContent>
 
         <TabsContent value="categories" className="space-y-4">
