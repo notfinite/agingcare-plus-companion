@@ -10,6 +10,10 @@ import { RealTimeChat } from '@/components/communication/RealTimeChat';
 import { InsuranceManager } from '@/components/insurance/InsuranceManager';
 import { PatientEducationHub } from '@/components/education/PatientEducationHub';
 import { EnhancedEmergencySystem } from '@/components/emergency/EnhancedEmergencySystem';
+import { PersonalizedRecommendations } from '@/components/recommendations/PersonalizedRecommendations';
+import { ClinicalIntelligenceHub } from '@/components/clinical/ClinicalIntelligenceHub';
+import { UnifiedCareTeam } from '@/components/team/UnifiedCareTeam';
+import { ValueBasedCareHub } from '@/components/analytics/ValueBasedCareHub';
 import { Heart, Activity, Pill, MessageSquare, CreditCard, BookOpen, Shield } from 'lucide-react';
 
 const Health = () => {
@@ -22,9 +26,8 @@ const Health = () => {
             Comprehensive health tracking, medication management, and care coordination
           </p>
         </div>
-
         <Tabs defaultValue="metrics" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="metrics" className="flex items-center gap-2">
               <Heart className="h-4 w-4" />
               Metrics
@@ -53,6 +56,7 @@ const Health = () => {
               <Shield className="h-4 w-4" />
               Emergency
             </TabsTrigger>
+            <TabsTrigger value="recommendations">Roadmap</TabsTrigger>
           </TabsList>
 
           <TabsContent value="metrics" className="space-y-6">
@@ -141,7 +145,39 @@ const Health = () => {
           <TabsContent value="emergency" className="space-y-6">
             <EnhancedEmergencySystem />
           </TabsContent>
+
+          <TabsContent value="recommendations" className="space-y-6">
+            <PersonalizedRecommendations />
+          </TabsContent>
         </Tabs>
+
+        {/* Advanced Features Section */}
+        <div className="mt-12 space-y-8">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold">Competitive Advantages</h2>
+            <p className="text-muted-foreground mt-2">Next-generation healthcare capabilities</p>
+          </div>
+
+          <Tabs defaultValue="ai-intelligence" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="ai-intelligence">AI Clinical Intelligence</TabsTrigger>
+              <TabsTrigger value="care-team">Unified Care Team</TabsTrigger>
+              <TabsTrigger value="value-based">Value-Based Care</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="ai-intelligence" className="space-y-6">
+              <ClinicalIntelligenceHub />
+            </TabsContent>
+
+            <TabsContent value="care-team" className="space-y-6">
+              <UnifiedCareTeam />
+            </TabsContent>
+
+            <TabsContent value="value-based" className="space-y-6">
+              <ValueBasedCareHub />
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </AppLayout>
   );
