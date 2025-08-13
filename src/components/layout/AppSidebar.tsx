@@ -39,7 +39,7 @@ interface NavigationItem {
 
 // Persona-specific navigation with priority ordering
 const getPersonaNavigationItems = (persona: string): NavigationItem[] => {
-  const allItems = {
+  const allItems: Record<string, NavigationItem> = {
     dashboard: {
       title: 'Dashboard',
       url: '/dashboard',
@@ -63,14 +63,14 @@ const getPersonaNavigationItems = (persona: string): NavigationItem[] => {
     },
     medication: {
       title: 'Medications',
-      url: '/medications',
+      url: '/health', // Redirect to health page for now
       icon: Activity,
       description: 'Smart reminders & tracking',
       roles: ['patient', 'caregiver', 'provider']
     },
     family: {
       title: 'Family Circle',
-      url: '/family',
+      url: '/compassionate-care', // Redirect to compassionate care for now
       icon: MessageSquare,
       description: 'Family messaging & care',
       roles: ['patient', 'caregiver']
@@ -84,21 +84,21 @@ const getPersonaNavigationItems = (persona: string): NavigationItem[] => {
     },
     mood: {
       title: 'Mood & Wellness',
-      url: '/mood',
+      url: '/compassionate-care', // Redirect to compassionate care for now
       icon: Brain,
       description: 'Mental health tracking',
       roles: ['patient', 'caregiver']
     },
     patients: {
       title: 'Patient Panel',
-      url: '/patients',
+      url: '/dashboard', // Provider dashboard shows patient panel
       icon: Users,
       description: 'Patient management',
       roles: ['caregiver', 'provider']
     },
     alerts: {
       title: 'Clinical Alerts',
-      url: '/alerts',
+      url: '/dashboard', // Show in dashboard for now
       icon: AlertTriangle,
       description: 'Urgent notifications',
       roles: ['caregiver', 'provider']
@@ -119,14 +119,14 @@ const getPersonaNavigationItems = (persona: string): NavigationItem[] => {
     },
     analytics: {
       title: 'Population Analytics',
-      url: '/analytics',
+      url: '/dashboard', // Provider dashboard has analytics
       icon: BarChart3,
       description: 'Health insights & trends',
       roles: ['provider']
     },
     devices: {
       title: 'Connected Devices',
-      url: '/devices',
+      url: '/health', // Show in health metrics
       icon: Activity,
       description: 'Health monitoring devices',
       roles: ['patient', 'caregiver', 'provider']
@@ -140,7 +140,7 @@ const getPersonaNavigationItems = (persona: string): NavigationItem[] => {
     },
     community: {
       title: 'Community',
-      url: '/community',
+      url: '/compassionate-care', // Show in compassionate care for now
       icon: MessageSquare,
       description: 'Support network',
       roles: ['patient', 'caregiver']
@@ -148,7 +148,7 @@ const getPersonaNavigationItems = (persona: string): NavigationItem[] => {
   };
 
   // Persona-specific priority ordering
-  const personaOrder = {
+  const personaOrder: Record<string, string[]> = {
     patient: [
       'dashboard', 'compassionate', 'health', 'medication', 'family', 
       'appointments', 'mood', 'telehealth', 'devices', 'sustainability', 'community'
@@ -163,11 +163,11 @@ const getPersonaNavigationItems = (persona: string): NavigationItem[] => {
     ]
   };
 
-  const order = personaOrder[persona as keyof typeof personaOrder] || personaOrder.patient;
+  const order = personaOrder[persona] || personaOrder.patient;
   
-  return order.map(key => allItems[key as keyof typeof allItems]).filter(item => 
-    item && (!item.roles || item.roles.includes(persona))
-  );
+  return order
+    .map(key => allItems[key])
+    .filter(item => item && (!item.roles || item.roles.includes(persona)));
 };
 
 const supportItems: NavigationItem[] = [
@@ -203,11 +203,11 @@ export function AppSidebar() {
       ? "bg-primary text-primary-foreground font-medium shadow-sm" 
       : "hover:bg-muted/70 transition-smooth";
 
-  const filterItemsByRole = (items: NavigationItem[]) => 
-    items.filter(item => !item.roles || item.roles.includes(currentPersona));
 
   const filteredMainItems = getPersonaNavigationItems(currentPersona);
-  const filteredSupportItems = filterItemsByRole(supportItems);
+  const filteredSupportItems = supportItems.filter(item => 
+    !item.roles || item.roles.includes(currentPersona)
+  );
 
   return (
     <Sidebar

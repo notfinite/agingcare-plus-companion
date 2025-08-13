@@ -40,13 +40,13 @@ export function QuickActionsBar({ persona }: QuickActionsBarProps) {
           { 
             icon: Activity, 
             label: 'Meds', 
-            path: '/medications',
+            path: '/health', // Redirect to health for now
             color: 'bg-primary/10 text-primary hover:bg-primary/20'
           },
           { 
             icon: MessageSquare, 
             label: 'Family', 
-            path: '/family',
+            path: '/compassionate-care', // Family features in compassionate care
             color: 'bg-secondary/10 text-secondary hover:bg-secondary/20'
           },
           { 
@@ -62,13 +62,13 @@ export function QuickActionsBar({ persona }: QuickActionsBarProps) {
           { 
             icon: Users, 
             label: 'Patients', 
-            path: '/patients',
+            path: '/dashboard', // Provider dashboard shows patient panel
             color: 'bg-primary/10 text-primary hover:bg-primary/20'
           },
           { 
             icon: AlertTriangle, 
             label: 'Alerts', 
-            path: '/alerts',
+            path: '/dashboard', // Show alerts in dashboard
             color: 'bg-health-warning/10 text-health-warning hover:bg-health-warning/20'
           },
           { 
@@ -80,7 +80,7 @@ export function QuickActionsBar({ persona }: QuickActionsBarProps) {
           { 
             icon: MessageSquare, 
             label: 'Family', 
-            path: '/family',
+            path: '/compassionate-care', // Family features in compassionate care
             color: 'bg-secondary/10 text-secondary hover:bg-secondary/20'
           },
           { 
@@ -96,13 +96,13 @@ export function QuickActionsBar({ persona }: QuickActionsBarProps) {
           { 
             icon: Users, 
             label: 'Panel', 
-            path: '/patients',
+            path: '/dashboard', // Provider dashboard shows patient panel
             color: 'bg-primary/10 text-primary hover:bg-primary/20'
           },
           { 
             icon: AlertTriangle, 
             label: 'Alerts', 
-            path: '/alerts',
+            path: '/dashboard', // Clinical alerts in dashboard
             color: 'bg-health-critical/10 text-health-critical hover:bg-health-critical/20'
           },
           { 
@@ -114,7 +114,7 @@ export function QuickActionsBar({ persona }: QuickActionsBarProps) {
           { 
             icon: BarChart3, 
             label: 'Analytics', 
-            path: '/analytics',
+            path: '/dashboard', // Provider dashboard has analytics
             color: 'bg-health-good/10 text-health-good hover:bg-health-good/20'
           },
           { 
