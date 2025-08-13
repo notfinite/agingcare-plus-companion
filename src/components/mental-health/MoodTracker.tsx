@@ -31,7 +31,7 @@ interface MoodEntry {
   stress_level: number;
   sleep_quality: number;
   notes: string;
-  timestamp: string;
+  recorded_at: string;
   triggers?: string[];
   coping_strategies?: string[];
 }
@@ -39,14 +39,16 @@ interface MoodEntry {
 interface MentalHealthResource {
   id: string;
   title: string;
-  type: 'meditation' | 'breathing' | 'article' | 'video' | 'exercise';
+  resource_type: 'meditation' | 'breathing' | 'article' | 'video' | 'exercise';
   duration_minutes: number;
   description: string;
-  url?: string;
+  content?: any;
+  category?: string;
 }
 
 export const MoodTracker = () => {
   const [moodEntries, setMoodEntries] = useState<MoodEntry[]>([]);
+  const [mentalHealthResources, setMentalHealthResources] = useState<MentalHealthResource[]>([]);
   const [currentMood, setCurrentMood] = useState(5);
   const [currentEnergy, setCurrentEnergy] = useState(5);
   const [currentStress, setCurrentStress] = useState(5);
@@ -55,6 +57,7 @@ export const MoodTracker = () => {
   const [showResources, setShowResources] = useState(false);
   const [selectedTriggers, setSelectedTriggers] = useState<string[]>([]);
   const [isTracking, setIsTracking] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const { toast } = useToast();
 
   const moodEmojis = [
@@ -71,129 +74,190 @@ export const MoodTracker = () => {
     'Pain levels', 'Appointment anxiety'
   ];
 
-  const mentalHealthResources: MentalHealthResource[] = [
-    {
-      id: '1',
-      title: 'Gentle Breathing Exercise',
-      type: 'breathing',
-      duration_minutes: 5,
-      description: 'A calming breathing technique to reduce anxiety and promote relaxation'
-    },
-    {
-      id: '2',
-      title: 'Mindful Body Scan',
-      type: 'meditation',
-      duration_minutes: 10,
-      description: 'Progressive relaxation to release tension and increase awareness'
-    },
-    {
-      id: '3',
-      title: 'Gratitude Reflection',
-      type: 'exercise',
-      duration_minutes: 5,
-      description: 'Simple practice to shift focus to positive aspects of your day'
-    },
-    {
-      id: '4',
-      title: 'Managing Health Anxiety',
-      type: 'article',
-      duration_minutes: 8,
-      description: 'Practical strategies for coping with health-related worries'
-    }
-  ];
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
 
   useEffect(() => {
-    fetchMoodData();
-  }, []);
+    if (userProfile?.id) {
+      fetchMoodData();
+      fetchMentalHealthResources();
+    }
+  }, [userProfile]);
+
+  const fetchUserProfile = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      setUserProfile(profile);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
 
   const fetchMoodData = async () => {
     try {
-      // Simulate mood history
-      const mockEntries: MoodEntry[] = [
-        {
-          id: '1',
-          mood_score: 4,
-          energy_level: 3,
-          stress_level: 2,
-          sleep_quality: 4,
-          notes: 'Had a good morning walk, feeling more positive',
-          timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          triggers: ['Weather'],
-          coping_strategies: ['Exercise', 'Music']
-        },
-        {
-          id: '2',
-          mood_score: 2,
-          energy_level: 2,
-          stress_level: 4,
-          sleep_quality: 2,
-          notes: 'Worried about upcoming appointment',
-          timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          triggers: ['Appointment anxiety'],
-          coping_strategies: ['Deep breathing']
-        },
-        {
-          id: '3',
-          mood_score: 5,
-          energy_level: 4,
-          stress_level: 1,
-          sleep_quality: 5,
-          notes: 'Great day! Video call with family lifted my spirits',
-          timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-          triggers: [],
-          coping_strategies: ['Social connection']
-        }
-      ];
+      if (!userProfile?.id) return;
 
-      setMoodEntries(mockEntries);
+      const { data: entries, error } = await supabase
+        .from('mood_entries')
+        .select('*')
+        .eq('patient_id', userProfile.id)
+        .order('recorded_at', { ascending: false })
+        .limit(10);
+
+      if (error) throw error;
+
+      const formattedEntries: MoodEntry[] = entries?.map(entry => ({
+        id: entry.id,
+        mood_score: entry.mood_score,
+        energy_level: (entry as any).energy_level || 5,
+        stress_level: (entry as any).stress_level || 3,
+        sleep_quality: (entry as any).sleep_quality || 5,
+        notes: entry.notes || '',
+        recorded_at: entry.recorded_at,
+        triggers: Array.isArray(entry.triggers) ? (entry.triggers as string[]) : [],
+        coping_strategies: Array.isArray(entry.coping_strategies) ? (entry.coping_strategies as string[]) : []
+      })) || [];
+
+      setMoodEntries(formattedEntries);
     } catch (error) {
       console.error('Error fetching mood data:', error);
     }
   };
 
+  const fetchMentalHealthResources = async () => {
+    try {
+      // Use fallback data for now since the table might not be fully ready
+      setMentalHealthResources([
+        {
+          id: '1',
+          title: 'Gentle Breathing Exercise',
+          resource_type: 'breathing',
+          duration_minutes: 5,
+          description: 'A calming breathing technique to reduce anxiety and promote relaxation',
+          content: { steps: ["Sit comfortably", "Breathe in for 4 counts", "Hold for 4 counts", "Breathe out for 6 counts", "Repeat 10 times"] }
+        },
+        {
+          id: '2',
+          title: 'Mindful Body Scan',
+          resource_type: 'meditation',
+          duration_minutes: 10,
+          description: 'Progressive relaxation to release tension and increase awareness',
+          content: { guide: "Focus on each part of your body from head to toe, noticing any tension and letting it go" }
+        },
+        {
+          id: '3',
+          title: 'Gratitude Reflection',
+          resource_type: 'exercise',
+          duration_minutes: 5,
+          description: 'Simple practice to shift focus to positive aspects of your day',
+          content: { prompts: ["What am I grateful for today?", "Who made me smile?", "What small victory did I have?"] }
+        },
+        {
+          id: '4',
+          title: 'Progressive Muscle Relaxation',
+          resource_type: 'meditation',
+          duration_minutes: 15,
+          description: 'Systematic tensing and relaxing of muscle groups to reduce physical stress',
+          content: { instructions: "Tense each muscle group for 5 seconds, then relax for 10 seconds" }
+        },
+        {
+          id: '5',
+          title: '5-4-3-2-1 Grounding Technique',
+          resource_type: 'exercise',
+          duration_minutes: 3,
+          description: 'Quick sensory grounding exercise to manage overwhelming feelings',
+          content: { method: "Name 5 things you see, 4 things you hear, 3 things you feel, 2 things you smell, 1 thing you taste" }
+        }
+      ]);
+    } catch (error) {
+      console.error('Error fetching mental health resources:', error);
+    }
+  };
+
   const saveMoodEntry = async () => {
-    setIsTracking(true);
-    
-    const entry: MoodEntry = {
-      id: Date.now().toString(),
-      mood_score: currentMood,
-      energy_level: currentEnergy,
-      stress_level: currentStress,
-      sleep_quality: currentSleep,
-      notes,
-      timestamp: new Date().toISOString(),
-      triggers: selectedTriggers,
-      coping_strategies: []
-    };
-
-    setMoodEntries(prev => [entry, ...prev]);
-    
-    // Reset form
-    setCurrentMood(5);
-    setCurrentEnergy(5);
-    setCurrentStress(5);
-    setCurrentSleep(5);
-    setNotes('');
-    setSelectedTriggers([]);
-    
-    // Provide feedback and suggestions
-    const suggestions = generatePersonalizedSuggestions(entry);
-    
-    toast({
-      title: "Mood Logged Successfully",
-      description: "Thank you for checking in with yourself. Your wellbeing matters.",
-    });
-
-    // Show resources if mood is low
-    if (currentMood <= 2 || currentStress >= 4) {
-      setShowResources(true);
+    if (!userProfile?.id) {
       toast({
-        title: "Support Resources Available",
-        description: "I notice you might be having a difficult time. Would you like some gentle support?",
+        title: "Error",
+        description: "Please sign in to track your mood.",
+        variant: "destructive"
       });
+      return;
     }
 
-    setIsTracking(false);
+    setIsTracking(true);
+
+    try {
+      const { data, error } = await supabase
+        .from('mood_entries')
+        .insert({
+          patient_id: userProfile.id,
+          mood_score: currentMood,
+          mood_type: 'daily_checkin',
+          notes: notes || null,
+          triggers: selectedTriggers.length > 0 ? selectedTriggers : null,
+          coping_strategies: [],
+          recorded_at: new Date().toISOString()
+        } as any)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Add to local state
+      const newEntry: MoodEntry = {
+        id: data.id,
+        mood_score: data.mood_score,
+        energy_level: currentEnergy,
+        stress_level: currentStress,
+        sleep_quality: currentSleep,
+        notes: data.notes || '',
+        recorded_at: data.recorded_at,
+        triggers: Array.isArray(data.triggers) ? (data.triggers as string[]) : [],
+        coping_strategies: Array.isArray(data.coping_strategies) ? (data.coping_strategies as string[]) : []
+      };
+
+      setMoodEntries(prev => [newEntry, ...prev]);
+
+      // Reset form
+      setCurrentMood(5);
+      setCurrentEnergy(5);
+      setCurrentStress(5);
+      setCurrentSleep(5);
+      setNotes('');
+      setSelectedTriggers([]);
+
+      toast({
+        title: "Mood Logged Successfully",
+        description: "Thank you for checking in with yourself. Your wellbeing matters.",
+      });
+
+      // Show resources if mood is low
+      if (currentMood <= 2 || currentStress >= 4) {
+        setShowResources(true);
+        toast({
+          title: "Support Resources Available",
+          description: "I notice you might be having a difficult time. Would you like some gentle support?",
+        });
+      }
+    } catch (error) {
+      console.error('Error saving mood entry:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save mood entry. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsTracking(false);
+    }
   };
 
   const generatePersonalizedSuggestions = (entry: MoodEntry) => {
@@ -234,31 +298,50 @@ export const MoodTracker = () => {
   };
 
   const startMentalHealthResource = async (resource: MentalHealthResource) => {
-    if (resource.type === 'breathing') {
-      startBreathingExercise();
-    } else if (resource.type === 'meditation') {
-      startMeditation();
+    if (resource.resource_type === 'breathing') {
+      startBreathingExercise(resource);
+    } else if (resource.resource_type === 'meditation') {
+      startMeditation(resource);
+    } else if (resource.resource_type === 'exercise') {
+      startMentalExercise(resource);
     } else {
       toast({
         title: `Starting: ${resource.title}`,
-        description: `This ${resource.type} will take about ${resource.duration_minutes} minutes`,
+        description: `This ${resource.resource_type} will take about ${resource.duration_minutes} minutes`,
       });
     }
   };
 
-  const startBreathingExercise = () => {
-    toast({
-      title: "Breathing Exercise Started",
-      description: "Breathe in slowly for 4 counts, hold for 4, then breathe out for 6 counts. Repeat.",
-    });
+  const startBreathingExercise = (resource: MentalHealthResource) => {
+    const steps = resource.content?.steps || [
+      "Sit comfortably",
+      "Breathe in for 4 counts",
+      "Hold for 4 counts", 
+      "Breathe out for 6 counts",
+      "Repeat 10 times"
+    ];
     
-    // Could implement actual breathing guide with timer
+    toast({
+      title: `${resource.title} Started`,
+      description: steps.join(" → "),
+    });
   };
 
-  const startMeditation = () => {
+  const startMeditation = (resource: MentalHealthResource) => {
+    const guide = resource.content?.guide || "Find a comfortable position and focus on your breath. Let thoughts come and go without judgment.";
+    
     toast({
-      title: "Meditation Session Starting",
-      description: "Find a comfortable position and focus on your breath. Let thoughts come and go without judgment.",
+      title: `${resource.title} Starting`,
+      description: guide,
+    });
+  };
+
+  const startMentalExercise = (resource: MentalHealthResource) => {
+    const prompts = resource.content?.prompts || resource.content?.tips || [resource.description];
+    
+    toast({
+      title: `${resource.title}`,
+      description: Array.isArray(prompts) ? prompts[0] : prompts,
     });
   };
 
@@ -432,10 +515,11 @@ export const MoodTracker = () => {
                 <div key={resource.id} className="p-4 bg-white rounded-lg border border-compassion-border hover:shadow-sm transition-shadow">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      {resource.type === 'breathing' && <Activity className="h-4 w-4 text-blue-500" />}
-                      {resource.type === 'meditation' && <Brain className="h-4 w-4 text-purple-500" />}
-                      {resource.type === 'exercise' && <Target className="h-4 w-4 text-green-500" />}
-                      {resource.type === 'article' && <BookOpen className="h-4 w-4 text-orange-500" />}
+                      {resource.resource_type === 'breathing' && <Activity className="h-4 w-4 text-blue-500" />}
+                      {resource.resource_type === 'meditation' && <Brain className="h-4 w-4 text-purple-500" />}
+                      {resource.resource_type === 'exercise' && <Target className="h-4 w-4 text-green-500" />}
+                      {resource.resource_type === 'article' && <BookOpen className="h-4 w-4 text-orange-500" />}
+                      {resource.resource_type === 'video' && <Play className="h-4 w-4 text-red-500" />}
                       <h4 className="font-medium text-sm">{resource.title}</h4>
                     </div>
                     <Badge variant="outline" className="text-xs">
@@ -486,7 +570,7 @@ export const MoodTracker = () => {
                     {getMoodIcon(entry.mood_score)}
                     <div>
                       <div className="text-sm font-medium">
-                        {new Date(entry.timestamp).toLocaleDateString()}
+                        {new Date(entry.recorded_at).toLocaleDateString()}
                       </div>
                       {entry.notes && (
                         <div className="text-xs text-muted-foreground">
