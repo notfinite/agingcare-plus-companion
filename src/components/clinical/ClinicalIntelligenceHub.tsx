@@ -155,11 +155,11 @@ export const ClinicalIntelligenceHub = () => {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'bg-red-600 text-white';
-      case 'high': return 'bg-red-500 text-white';
-      case 'medium': return 'bg-yellow-500 text-white';
-      case 'low': return 'bg-green-500 text-white';
-      default: return 'bg-gray-500 text-white';
+      case 'critical': return 'bg-health-critical text-on-primary';
+      case 'high': return 'bg-health-warning text-on-primary';
+      case 'medium': return 'bg-health-caution text-foreground';
+      case 'low': return 'bg-health-good text-on-primary';
+      default: return 'bg-muted text-muted-foreground';
     }
   };
 

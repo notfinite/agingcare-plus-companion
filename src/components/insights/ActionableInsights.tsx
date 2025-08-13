@@ -103,9 +103,9 @@ export const ActionableInsights: React.FC<ActionableInsightsProps> = ({ role = '
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-health-critical text-white';
-      case 'medium': return 'bg-health-warning text-white';
-      case 'low': return 'bg-health-good text-white';
+      case 'high': return 'bg-health-critical text-on-primary';
+      case 'medium': return 'bg-health-warning text-on-primary';
+      case 'low': return 'bg-health-good text-on-primary';
       default: return 'bg-muted text-muted-foreground';
     }
   };
