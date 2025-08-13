@@ -137,21 +137,25 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
         throw new Error('MediaDevices API not supported');
       }
 
-      // Simple approach - try basic audio first
+      // First, check if any audio input devices are available
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const audioInputs = devices.filter(device => device.kind === 'audioinput');
+      
+      if (audioInputs.length === 0) {
+        throw new Error('No microphone devices found on this device');
+      }
+
+      // Try to get microphone access
       let stream;
       try {
         stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       } catch (basicError) {
-        // If basic fails, try enhanced constraints as fallback
+        // If basic fails, try with specific device
         try {
           stream = await navigator.mediaDevices.getUserMedia({ 
-            audio: {
-              echoCancellation: true,
-              noiseSuppression: true,
-              autoGainControl: true
-            }
+            audio: { deviceId: audioInputs[0].deviceId }
           });
-        } catch (enhancedError) {
+        } catch (deviceError) {
           throw basicError; // Throw the original error
         }
       }
