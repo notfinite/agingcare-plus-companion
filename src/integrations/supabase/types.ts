@@ -1410,6 +1410,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_family_conversation: {
+        Args: { patient_uuid: string; conversation_title?: string }
+        Returns: string
+      }
       find_or_create_patient_by_email: {
         Args: {
           patient_email: string
@@ -1417,6 +1421,30 @@ export type Database = {
           relationship_type: string
         }
         Returns: string
+      }
+      get_family_members: {
+        Args: { patient_uuid: string }
+        Returns: {
+          id: string
+          name: string
+          relationship: string
+          email: string
+          phone: string
+          emergency_contact: boolean
+          connection_status: string
+          family_member_id: string
+        }[]
+      }
+      get_user_conversations: {
+        Args: { user_uuid: string }
+        Returns: {
+          conversation_id: string
+          conversation_title: string
+          conversation_type: string
+          last_message_content: string
+          last_message_timestamp: string
+          participant_count: number
+        }[]
       }
     }
     Enums: {
