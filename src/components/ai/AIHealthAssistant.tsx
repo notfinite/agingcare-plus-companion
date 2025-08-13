@@ -71,9 +71,14 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
     setIsLoading(true);
 
     try {
-      setDebugInfo('Sending message to AI...');
+      setDebugInfo('Calling AI edge function...');
       
-      const { data, error } = await supabase.functions.invoke('ai-health-assistant', {
+      // Add timeout to prevent infinite loading
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout after 30 seconds')), 30000)
+      );
+      
+      const functionCall = supabase.functions.invoke('ai-health-assistant', {
         body: {
           message: messageText,
           userRole,
@@ -81,17 +86,24 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
         }
       });
 
+      const { data, error } = await Promise.race([functionCall, timeoutPromise]) as any;
+
       if (error) {
-        setDebugInfo(`Error: ${error.message || 'Unknown error'}`);
+        setDebugInfo(`Function error: ${error.message}`);
         throw error;
       }
 
-      if (!data || !data.response) {
-        setDebugInfo('No response received from AI');
-        throw new Error('No response received from AI assistant');
+      if (!data) {
+        setDebugInfo('No data returned from function');
+        throw new Error('No data received from AI assistant');
       }
 
-      setDebugInfo('AI response received successfully');
+      if (!data.response) {
+        setDebugInfo(`Invalid response format: ${JSON.stringify(data)}`);
+        throw new Error('Invalid response format from AI assistant');
+      }
+
+      setDebugInfo('Success! AI responded');
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
