@@ -14,11 +14,11 @@ serve(async (req) => {
   try {
     const { message, userRole = 'patient', context = {} } = await req.json();
     
-    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY');
-    console.log('Gemini API Key exists:', !!GEMINI_API_KEY);
+    const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+    console.log('OpenAI API Key exists:', !!OPENAI_API_KEY);
     
-    if (!GEMINI_API_KEY) {
-      throw new Error('Gemini API key not configured');
+    if (!OPENAI_API_KEY) {
+      throw new Error('OpenAI API key not configured');
     }
 
     // Create personalized system prompt based on user role
@@ -54,37 +54,35 @@ serve(async (req) => {
     const contextInfo = context.vitals ? 
       `\n\nCurrent user context: Blood Pressure: ${context.vitals.bloodPressure}, Heart Rate: ${context.vitals.heartRate}, Recent medications: ${context.medications || 'None specified'}.` : '';
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              {
-                text: `${systemPrompt + contextInfo}\n\nUser: ${message}`
-              }
-            ]
-          }
+        model: 'gpt-4.1-2025-04-14',
+        messages: [
+          { 
+            role: 'system', 
+            content: systemPrompt + contextInfo
+          },
+          { role: 'user', content: message }
         ],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 500,
-        }
+        temperature: 0.7,
+        max_tokens: 500,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Gemini API Response:', response.status, response.statusText);
-      console.error('Gemini API Error Body:', errorText);
-      throw new Error(`Gemini API error: ${response.statusText} - ${errorText}`);
+      console.error('OpenAI API Response:', response.status, response.statusText);
+      console.error('OpenAI API Error Body:', errorText);
+      throw new Error(`OpenAI API error: ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
-    const assistantResponse = data.candidates[0].content.parts[0].text;
+    const assistantResponse = data.choices[0].message.content;
 
     console.log('AI Health Assistant Response:', assistantResponse);
 
