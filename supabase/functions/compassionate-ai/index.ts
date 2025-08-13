@@ -15,10 +15,19 @@ serve(async (req) => {
   }
 
   try {
+    console.log('📥 Received request:', req.method, req.url);
+    
     const { message, conversationHistory, userContext } = await req.json();
+    console.log('📨 Message received:', message);
+    console.log('🔧 Gemini API Key exists:', !!geminiApiKey);
 
     if (!message) {
       throw new Error('Message is required');
+    }
+
+    if (!geminiApiKey) {
+      console.error('❌ GEMINI_API_KEY not found in environment');
+      throw new Error('Gemini API key not configured');
     }
 
     // Create a compassionate system prompt for Gemini
@@ -105,35 +114,52 @@ Respond with warmth, understanding, and practical support. Keep responses conver
       }),
     });
 
+    console.log('🌐 Gemini API Response Status:', response.status);
+    
     if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('❌ Gemini API Error:', response.status, errorText);
+      throw new Error(`Gemini API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
+    console.log('📊 Gemini API Response:', JSON.stringify(data, null, 2));
     
     if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+      console.error('❌ No response generated from Gemini:', data);
       throw new Error('No response generated from Gemini');
     }
 
     const aiResponse = data.candidates[0].content.parts[0].text;
+    console.log('✅ AI Response generated:', aiResponse.substring(0, 100) + '...');
 
     // Simple sentiment analysis based on keywords
     const sentimentScore = analyzeSentiment(message);
 
-    return new Response(JSON.stringify({ 
+    const responseData = { 
       response: aiResponse,
       sentiment: sentimentScore,
       timestamp: new Date().toISOString()
-    }), {
+    };
+    
+    console.log('📤 Sending response back to client');
+    return new Response(JSON.stringify(responseData), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Error in compassionate-ai function:', error);
+    console.error('💥 Error in compassionate-ai function:', error);
+    console.error('📋 Error details:', {
+      message: error.message,
+      stack: error.stack,
+      geminiKeyExists: !!geminiApiKey
+    });
+    
     const errorMessage = 'I apologize, but I\'m having trouble connecting right now. Please try again in a moment, or reach out to your healthcare team if you need immediate support.';
     
     return new Response(JSON.stringify({ 
       error: errorMessage,
-      fallbackResponse: true
+      fallbackResponse: true,
+      debugInfo: error.message
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

@@ -216,6 +216,7 @@ export const CompassionateAI = () => {
 
       if (error) {
         console.error('Edge function error:', error);
+        console.error('Edge function error details:', JSON.stringify(error, null, 2));
         throw new Error(error.message || 'Failed to get AI response');
       }
 
@@ -245,13 +246,29 @@ export const CompassionateAI = () => {
           title: emotion.needs_support ? "💙 You're not alone" : "Thank you for sharing",
           description: "I'm here to support you with understanding and care.",
         });
+      } else if (data?.error) {
+        console.error('AI service error:', data.error);
+        console.error('Debug info:', data.debugInfo);
+        toast({
+          title: "AI Service Issue",
+          description: `Debug: ${data.debugInfo || 'Unknown error'}`,
+          variant: "destructive"
+        });
+      } else {
+        console.error('Unexpected response format:', data);
+        toast({
+          title: "Unexpected Response",
+          description: "The AI service returned an unexpected format.",
+          variant: "destructive"
+        });
       }
       
     } catch (error) {
       console.error('Error getting AI response:', error);
+      console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
       toast({
         title: "I'm still here for you",
-        description: "Even when connections are difficult, I care about you.",
+        description: `Connection issue: ${error.message || 'Unknown error'}`,
         variant: "destructive"
       });
     } finally {
