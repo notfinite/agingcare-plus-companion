@@ -173,57 +173,90 @@ export const CompassionateAI = () => {
     setCurrentMessage('');
     setIsTyping(true);
 
-    // Simulate AI processing time
-    setTimeout(async () => {
-      const aiResponse = generateCompassionateResponse(currentMessage, emotion);
+    
+    // Get immediate fallback response
+    const fallbackResponse = generateCompassionateResponse(currentMessage, emotion);
+    
+    const aiMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      content: fallbackResponse,
+      sender: 'ai',
+      timestamp: new Date(),
+      emotion_detected: emotion.primary_emotion,
+      crisis_flag: emotion.primary_emotion === 'crisis'
+    };
+
+    setMessages(prev => [...prev, aiMessage]);
+
+    // Text-to-speech for AI responses if enabled
+    if (isAudioEnabled) {
+      speak(fallbackResponse);
+    }
+
+    // Now get enhanced response from our compassionate AI edge function
+    try {
+      console.log('Sending message to compassionate AI:', currentMessage);
       
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: aiResponse,
-        sender: 'ai',
-        timestamp: new Date(),
-        emotion_detected: emotion.primary_emotion,
-        crisis_flag: emotion.primary_emotion === 'crisis'
-      };
-
-      setMessages(prev => [...prev, aiMessage]);
-      setIsTyping(false);
-
-      // Text-to-speech for AI responses if enabled
-      if (isAudioEnabled) {
-        speak(aiResponse);
-      }
-
-      // Call AI health assistant for more sophisticated responses
-      try {
-        const { data } = await supabase.functions.invoke('ai-health-assistant', {
-          body: {
-            message: currentMessage,
-            context: {
-              type: 'emotional_support',
-              emotional_state: emotion,
-              conversation_history: messages.slice(-3)
-            }
-          }
-        });
-        
-        if (data?.response) {
-          const enhancedResponse: Message = {
-            id: (Date.now() + 2).toString(),
-            content: data.response,
-            sender: 'ai',
-            timestamp: new Date()
-          };
-          setMessages(prev => [...prev, enhancedResponse]);
-          
-          if (isAudioEnabled) {
-            speak(data.response);
+      const { data, error } = await supabase.functions.invoke('compassionate-ai', {
+        body: {
+          message: currentMessage,
+          conversationHistory: messages.map(msg => ({
+            role: msg.sender === 'user' ? 'user' : 'assistant',
+            content: msg.content
+          })),
+          userContext: {
+            emotionalState: emotion,
+            timestamp: new Date().toISOString(),
+            source: 'compassionate_dashboard'
           }
         }
-      } catch (error) {
-        console.error('AI assistant error:', error);
+      });
+
+      console.log('AI Response:', data);
+
+      if (error) {
+        console.error('Edge function error:', error);
+        throw new Error(error.message || 'Failed to get AI response');
       }
-    }, 1500);
+
+      if (data?.response) {
+        // Replace the fallback response with the enhanced AI response
+        const enhancedResponse: Message = {
+          id: (Date.now() + 2).toString(),
+          content: data.response,
+          sender: 'ai',
+          timestamp: new Date(),
+          emotion_detected: emotion.primary_emotion,
+          crisis_flag: emotion.primary_emotion === 'crisis'
+        };
+        
+        // Replace the last AI message with the enhanced one
+        setMessages(prev => {
+          const newMessages = [...prev];
+          newMessages[newMessages.length - 1] = enhancedResponse;
+          return newMessages;
+        });
+        
+        if (isAudioEnabled) {
+          speak(data.response);
+        }
+
+        toast({
+          title: emotion.needs_support ? "💙 You're not alone" : "Thank you for sharing",
+          description: "I'm here to support you with understanding and care.",
+        });
+      }
+      
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      toast({
+        title: "I'm still here for you",
+        description: "Even when connections are difficult, I care about you.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const speak = async (text: string) => {
@@ -264,7 +297,7 @@ export const CompassionateAI = () => {
 
   return (
     <div className="space-y-4">
-      <Card className="border-compassion-gentle bg-gradient-to-br from-compassion-background to-white">
+      <Card className="border-compassion-gentle bg-gradient-to-br from-white to-compassion-gentle">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-compassion-primary">
@@ -324,7 +357,7 @@ export const CompassionateAI = () => {
                   className={`max-w-[80%] rounded-lg p-3 ${
                     message.sender === 'user'
                       ? 'bg-compassion-primary text-white'
-                      : 'bg-compassion-gentle border border-compassion-border'
+                      : 'bg-compassion-gentle border border-gray-200'
                   }`}
                 >
                   <div className="flex items-start gap-2">
@@ -351,7 +384,7 @@ export const CompassionateAI = () => {
             
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-compassion-gentle border border-compassion-border rounded-lg p-3">
+                <div className="bg-compassion-gentle border border-gray-200 rounded-lg p-3">
                   <div className="flex items-center gap-2">
                     <Bot className="h-4 w-4 text-compassion-primary" />
                     <div className="flex space-x-1">
@@ -373,7 +406,7 @@ export const CompassionateAI = () => {
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}
                 placeholder="Share what's on your mind... I'm here to listen 💙"
-                className="resize-none border-compassion-border focus:border-compassion-primary"
+                className="resize-none border-gray-200 focus:border-compassion-primary"
                 rows={2}
                 onKeyPress={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
@@ -389,7 +422,7 @@ export const CompassionateAI = () => {
                 size="sm"
                 onClick={startListening}
                 disabled={isListening}
-                className="border-compassion-border hover:bg-compassion-gentle"
+                className="border-gray-200 hover:bg-compassion-gentle"
               >
                 {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
               </Button>
@@ -410,7 +443,7 @@ export const CompassionateAI = () => {
               variant="outline"
               size="sm"
               onClick={() => setCurrentMessage("I'm feeling anxious")}
-              className="text-xs border-compassion-border hover:bg-compassion-gentle"
+              className="text-xs border-gray-200 hover:bg-compassion-gentle"
             >
               I'm feeling anxious
             </Button>
@@ -418,7 +451,7 @@ export const CompassionateAI = () => {
               variant="outline"
               size="sm"
               onClick={() => setCurrentMessage("I need someone to talk to")}
-              className="text-xs border-compassion-border hover:bg-compassion-gentle"
+              className="text-xs border-gray-200 hover:bg-compassion-gentle"
             >
               I need someone to talk to
             </Button>
@@ -426,7 +459,7 @@ export const CompassionateAI = () => {
               variant="outline"
               size="sm"
               onClick={() => setCurrentMessage("I'm having a hard day")}
-              className="text-xs border-compassion-border hover:bg-compassion-gentle"
+              className="text-xs border-gray-200 hover:bg-compassion-gentle"
             >
               I'm having a hard day
             </Button>
