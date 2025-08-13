@@ -129,8 +129,10 @@ Respond with warmth, understanding, and practical support. Keep responses conver
     });
   } catch (error) {
     console.error('Error in compassionate-ai function:', error);
+    const errorMessage = 'I apologize, but I\'m having trouble connecting right now. Please try again in a moment, or reach out to your healthcare team if you need immediate support.';
+    
     return new Response(JSON.stringify({ 
-      error: 'I apologize, but I'm having trouble connecting right now. Please try again in a moment, or reach out to your healthcare team if you need immediate support.',
+      error: errorMessage,
       fallbackResponse: true
     }), {
       status: 500,
