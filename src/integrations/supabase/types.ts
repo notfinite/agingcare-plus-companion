@@ -1435,6 +1435,12 @@ export type Database = {
           family_member_id: string
         }[]
       }
+      get_user_conversation_ids: {
+        Args: { user_uuid: string }
+        Returns: {
+          conversation_id: string
+        }[]
+      }
       get_user_conversations: {
         Args: { user_uuid: string }
         Returns: {
