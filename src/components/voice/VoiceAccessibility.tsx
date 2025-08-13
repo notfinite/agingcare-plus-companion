@@ -105,11 +105,19 @@ export const VoiceAccessibility = () => {
     // Define voice commands
     const commands = {
       'help': () => {
-        speak("Available voice commands: Navigate home, open health, schedule appointment, emergency, show medications, call doctor, or speak naturally to ask questions.");
+        speak("Available voice commands: Navigate home, go to compassionate care, open health, schedule appointment, emergency, show medications, call doctor, or speak naturally to ask questions.");
       },
       'navigate home': () => {
-        window.location.href = '/';
-        speak("Navigating to home page");
+        window.location.href = '/dashboard';
+        speak("Navigating to home dashboard");
+      },
+      'go to dashboard': () => {
+        window.location.href = '/dashboard';
+        speak("Opening dashboard");
+      },
+      'compassionate care': () => {
+        window.location.href = '/compassionate-care';
+        speak("Opening compassionate care with AI companion");
       },
       'open health': () => {
         window.location.href = '/health';
@@ -120,35 +128,54 @@ export const VoiceAccessibility = () => {
         speak("Opening appointment scheduler");
       },
       'emergency': () => {
-        speak("Emergency mode activated. Contacting emergency services.");
-        // Trigger emergency button functionality
+        speak("Emergency mode activated. Looking for emergency button.");
+        // Find and trigger emergency button
+        const emergencyBtn = document.querySelector('[data-emergency]') as HTMLButtonElement;
+        if (emergencyBtn) {
+          emergencyBtn.click();
+        } else {
+          speak("Emergency contacts: Please call 911 for immediate help, or contact your healthcare provider.");
+        }
       },
       'show medications': () => {
         speak("Displaying your medication list");
-        // Navigate to medications
+        window.location.href = '/health';
       },
       'call doctor': () => {
         speak("Initiating video call with your healthcare provider");
         window.location.href = '/telehealth';
       },
       'read messages': () => {
-        speak("Reading your latest health messages");
+        speak("Reading your latest health messages. Opening community section.");
+        window.location.href = '/community';
       },
-      'louder': () => {
+      'voice louder': () => {
         setVoiceSpeed(prev => Math.min(prev + 0.2, 2));
         speak("Speaking louder now");
       },
-      'quieter': () => {
+      'voice quieter': () => {
         setVoiceSpeed(prev => Math.max(prev - 0.2, 0.5));
         speak("Speaking more quietly now");
       },
-      'faster': () => {
+      'speak faster': () => {
         setVoiceSpeed(prev => Math.min(prev + 0.2, 2));
         speak("Speaking faster now");
       },
-      'slower': () => {
+      'speak slower': () => {
         setVoiceSpeed(prev => Math.max(prev - 0.2, 0.5));
         speak("Speaking slower now");
+      },
+      'stop talking': () => {
+        speechSynthesis.cancel();
+        speak("Voice stopped");
+      },
+      'repeat that': () => {
+        const lastMessage = recognizedCommands[recognizedCommands.length - 1];
+        if (lastMessage) {
+          speak(`I last heard: ${lastMessage.command}`);
+        } else {
+          speak("I don't have anything to repeat");
+        }
       }
     };
 
@@ -173,13 +200,17 @@ export const VoiceAccessibility = () => {
     try {
       speak("Let me help you with that question.");
       
-      const { data } = await supabase.functions.invoke('ai-health-assistant', {
+      // Use our compassionate AI instead of the generic health assistant
+      const { data } = await supabase.functions.invoke('compassionate-ai', {
         body: {
           message: query,
-          context: {
+          conversationHistory: [],
+          userContext: {
             type: 'voice_query',
             accessibility_mode: true,
-            voice_response_required: true
+            voice_response_required: true,
+            timestamp: new Date().toISOString(),
+            source: 'voice_accessibility'
           }
         }
       });
@@ -191,6 +222,8 @@ export const VoiceAccessibility = () => {
           action: 'AI Response',
           confidence: 0.8
         }].slice(-5));
+      } else {
+        speak("I'm here to help, but I'm having trouble understanding that request. Could you try rephrasing it?");
       }
     } catch (error) {
       speak("I'm sorry, I'm having trouble processing that request right now. Please try again or use the visual interface.");
@@ -259,7 +292,7 @@ export const VoiceAccessibility = () => {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Voice Control Status */}
-        <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-compassion-border">
+        <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
           <div className="flex items-center gap-3">
             <div className={`w-3 h-3 rounded-full ${isListening ? 'bg-green-500 animate-pulse' : 'bg-gray-300'}`} />
             <span className="font-medium">
