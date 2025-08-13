@@ -66,7 +66,10 @@ export const EnhancedEmergencySystem = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => setLocation(position),
-        (error) => console.error('Error getting location:', error)
+        (error) => {
+          console.log('Location access denied or unavailable:', error.message);
+          // Continue without location - this is not a critical error
+        }
       );
     }
   };
@@ -286,10 +289,10 @@ export const EnhancedEmergencySystem = () => {
                 {emergencyActive ? 'ALERT SENT' : 'EMERGENCY'}
               </Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle className="text-red-600">Emergency Alert</DialogTitle>
-              </DialogHeader>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="text-red-600">Emergency Alert</DialogTitle>
+            </DialogHeader>
               <div className="space-y-4">
                 <div>
                   <Label>Incident Type</Label>
@@ -351,10 +354,10 @@ export const EnhancedEmergencySystem = () => {
                 Add Contact
               </Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add Emergency Contact</DialogTitle>
-              </DialogHeader>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add Emergency Contact</DialogTitle>
+            </DialogHeader>
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>

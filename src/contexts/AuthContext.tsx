@@ -49,7 +49,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (session?.user) {
         fetchProfile(session.user.id);
       } else {
-        setLoading(false);
+        // For demo purposes, sign in anonymously if no user
+        signInAnonymously();
       }
     });
 
@@ -82,6 +83,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error) {
       console.error('Error fetching profile:', error);
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const signInAnonymously = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInAnonymously();
+      if (error) throw error;
+      
+      if (data.user) {
+        // Create or get demo profile
+        const { data: existingProfile, error: fetchError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', data.user.id)
+          .maybeSingle();
+
+        if (fetchError && fetchError.code !== 'PGRST116') {
+          throw fetchError;
+        }
+
+        if (!existingProfile) {
+          const currentPersona = localStorage.getItem('demoPersona') || 'patient';
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert({
+              user_id: data.user.id,
+              email: `demo-${currentPersona}@example.com`,
+              full_name: `Demo ${currentPersona.charAt(0).toUpperCase() + currentPersona.slice(1)}`,
+              role: currentPersona as 'patient' | 'caregiver' | 'provider',
+              preferred_language: 'en',
+              accessibility_settings: {},
+            });
+          
+          if (profileError) throw profileError;
+        }
+        
+        await fetchProfile(data.user.id);
+      }
+    } catch (error) {
+      console.error('Anonymous sign in failed:', error);
       setLoading(false);
     }
   };
