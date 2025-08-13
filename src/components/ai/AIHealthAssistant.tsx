@@ -40,6 +40,7 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true);
+  const [debugInfo, setDebugInfo] = useState<string>('');
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -70,9 +71,7 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
     setIsLoading(true);
 
     try {
-      console.log('🤖 Sending message to AI Health Assistant:', messageText);
-      console.log('🤖 User role:', userRole);
-      console.log('🤖 Context:', context);
+      setDebugInfo('Sending message to AI...');
       
       const { data, error } = await supabase.functions.invoke('ai-health-assistant', {
         body: {
@@ -82,18 +81,17 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
         }
       });
 
-      console.log('🤖 Raw response data:', data);
-      console.log('🤖 Raw response error:', error);
-
       if (error) {
-        console.error('🤖 Edge function error:', error);
+        setDebugInfo(`Error: ${error.message || 'Unknown error'}`);
         throw error;
       }
 
       if (!data || !data.response) {
-        console.error('🤖 No response data received:', data);
+        setDebugInfo('No response received from AI');
         throw new Error('No response received from AI assistant');
       }
+
+      setDebugInfo('AI response received successfully');
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -110,14 +108,16 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
       // }
 
     } catch (error) {
-      console.error('Error sending message:', error);
+      setDebugInfo(`Error: ${error.message || 'Failed to get AI response'}`);
       toast({
-        title: "Error",
-        description: "Failed to get response from AI assistant",
+        title: "AI Assistant Error",
+        description: error.message || "Failed to get response from AI assistant",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
+      // Clear debug info after 5 seconds
+      setTimeout(() => setDebugInfo(''), 5000);
     }
   };
 
@@ -302,6 +302,11 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
             </Button>
           </div>
         </CardTitle>
+        {debugInfo && (
+          <div className="text-xs text-muted-foreground mt-1 p-2 bg-muted rounded">
+            Debug: {debugInfo}
+          </div>
+        )}
       </CardHeader>
       
       <CardContent className="flex-1 flex flex-col min-h-0 p-4">
