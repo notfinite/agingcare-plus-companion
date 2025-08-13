@@ -17,8 +17,9 @@ serve(async (req) => {
     const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
     console.log('API Key exists:', !!OPENAI_API_KEY);
     if (OPENAI_API_KEY) {
-      console.log('API Key prefix:', OPENAI_API_KEY.substring(0, 7));
+      console.log('API Key prefix:', OPENAI_API_KEY.substring(0, 10));
       console.log('API Key length:', OPENAI_API_KEY.length);
+      console.log('API Key type: Organization key (non-sk format)');
     }
     
     if (!OPENAI_API_KEY) {
