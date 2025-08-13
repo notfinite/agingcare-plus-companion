@@ -1037,6 +1037,89 @@ export type Database = {
         }
         Relationships: []
       }
+      recommendation_progress_logs: {
+        Row: {
+          id: string
+          logged_at: string
+          notes: string | null
+          progress_data: Json
+          progress_type: string
+          user_recommendation_id: string
+        }
+        Insert: {
+          id?: string
+          logged_at?: string
+          notes?: string | null
+          progress_data?: Json
+          progress_type: string
+          user_recommendation_id: string
+        }
+        Update: {
+          id?: string
+          logged_at?: string
+          notes?: string | null
+          progress_data?: Json
+          progress_type?: string
+          user_recommendation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_progress_logs_user_recommendation_id_fkey"
+            columns: ["user_recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "user_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recommendation_templates: {
+        Row: {
+          action_steps: Json
+          category: string
+          created_at: string
+          description: string
+          difficulty_level: string
+          duration_days: number
+          id: string
+          is_active: boolean | null
+          resources: Json | null
+          success_criteria: Json
+          target_audience: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          action_steps?: Json
+          category: string
+          created_at?: string
+          description: string
+          difficulty_level: string
+          duration_days: number
+          id?: string
+          is_active?: boolean | null
+          resources?: Json | null
+          success_criteria?: Json
+          target_audience: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          action_steps?: Json
+          category?: string
+          created_at?: string
+          description?: string
+          difficulty_level?: string
+          duration_days?: number
+          id?: string
+          is_active?: boolean | null
+          resources?: Json | null
+          success_criteria?: Json
+          target_audience?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sustainability_goals: {
         Row: {
           achievement_date: string | null
@@ -1114,6 +1197,66 @@ export type Database = {
           recorded_at?: string
         }
         Relationships: []
+      }
+      user_recommendations: {
+        Row: {
+          actual_completion_date: string | null
+          created_at: string
+          custom_notes: string | null
+          id: string
+          milestones_completed: Json | null
+          progress_percentage: number | null
+          recommendation_template_id: string
+          start_date: string
+          status: string
+          target_completion_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          actual_completion_date?: string | null
+          created_at?: string
+          custom_notes?: string | null
+          id?: string
+          milestones_completed?: Json | null
+          progress_percentage?: number | null
+          recommendation_template_id: string
+          start_date?: string
+          status?: string
+          target_completion_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          actual_completion_date?: string | null
+          created_at?: string
+          custom_notes?: string | null
+          id?: string
+          milestones_completed?: Json | null
+          progress_percentage?: number | null
+          recommendation_template_id?: string
+          start_date?: string
+          status?: string
+          target_completion_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_recommendations_recommendation_template_id_fkey"
+            columns: ["recommendation_template_id"]
+            isOneToOne: false
+            referencedRelation: "recommendation_templates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_recommendations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
