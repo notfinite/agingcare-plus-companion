@@ -89,10 +89,10 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Convert response to speech if audio is enabled
-      if (audioEnabled) {
-        await playTextAsAudio(data.response);
-      }
+      // Convert response to speech if audio is enabled (skip for now due to function errors)
+      // if (audioEnabled) {
+      //   await playTextAsAudio(data.response);
+      // }
 
     } catch (error) {
       console.error('Error sending message:', error);
@@ -235,8 +235,8 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
   };
 
   return (
-    <Card className="flex flex-col h-full max-h-[600px]">
-      <CardHeader className="pb-4">
+    <Card className="flex flex-col h-[500px]">
+      <CardHeader className="pb-4 flex-shrink-0">
         <CardTitle className="flex items-center gap-2">
           <Bot className="h-6 w-6 text-primary" />
           AI Health Assistant
@@ -252,9 +252,9 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
         </CardTitle>
       </CardHeader>
       
-      <CardContent className="flex-1 flex flex-col">
+      <CardContent className="flex-1 flex flex-col min-h-0 p-4">
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2 min-h-0">
+        <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2 scrollbar-thin">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -304,7 +304,7 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
         </div>
 
         {/* Input Area */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-shrink-0">
           <Input
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
