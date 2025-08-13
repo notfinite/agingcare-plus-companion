@@ -3,7 +3,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Heart, Bell, Menu, Settings, LogOut, ArrowLeft, Search } from 'lucide-react';
-import { EnhancedEmergencyButton } from '@/components/emergency/EnhancedEmergencyButton';
+import { EmergencyFloatingButton } from './EmergencyFloatingButton';
+import { QuickActionsBar } from './QuickActionsBar';
 import { GlobalSearch } from '@/components/search/GlobalSearch';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/layout/AppSidebar';
@@ -22,6 +23,9 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const { profile, signOut } = useAuth();
   const [searchOpen, setSearchOpen] = useState(false);
+  
+  // Get current persona for quick actions
+  const currentPersona = localStorage.getItem('demoPersona') || 'patient';
 
   return (
     <SidebarProvider>
@@ -58,7 +62,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                   <Search className="h-6 w-6" />
                 </Button>
                 
-                <EnhancedEmergencyButton />
+                
                 
                 <Button variant="ghost" size="icon" className="relative">
                   <Bell className="h-6 w-6" />
@@ -92,10 +96,16 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             </div>
           </header>
           
+          {/* Quick Actions Bar */}
+          <QuickActionsBar persona={currentPersona} />
+          
           <main className="flex-1 container mx-auto px-4 py-8">
             {children}
           </main>
         </div>
+        
+        {/* Emergency Floating Button */}
+        <EmergencyFloatingButton />
         
         <GlobalSearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       </div>

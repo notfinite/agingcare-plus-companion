@@ -14,7 +14,8 @@ import {
   UserPlus,
   BarChart3,
   Leaf,
-  Sparkles
+  Sparkles,
+  AlertTriangle
 } from 'lucide-react';
 import {
   Sidebar,
@@ -36,85 +37,138 @@ interface NavigationItem {
   roles?: string[];
 }
 
-const navigationItems: NavigationItem[] = [
-  {
-    title: 'Dashboard',
-    url: '/dashboard',
-    icon: Home,
-    description: 'Main overview',
-    roles: ['patient', 'caregiver', 'provider']
-  },
-  {
-    title: 'Compassionate Care',
-    url: '/compassionate-care',
-    icon: Sparkles,
-    description: 'AI companion & support',
-    roles: ['patient', 'caregiver', 'provider']
-  },
-  {
-    title: 'Health Metrics',
-    url: '/health',
-    icon: Heart,
-    description: 'Vital signs and trends',
-    roles: ['patient', 'caregiver', 'provider']
-  },
-  {
-    title: 'Appointments',
-    url: '/appointments',
-    icon: Calendar,
-    description: 'Schedule management',
-    roles: ['patient', 'caregiver', 'provider']
-  },
-  {
-    title: 'Telehealth',
-    url: '/telehealth',
-    icon: Stethoscope,
-    description: 'Virtual consultations',
-    roles: ['patient', 'caregiver', 'provider']
-  },
-  {
-    title: 'Community',
-    url: '/community',
-    icon: MessageSquare,
-    description: 'Support network',
-    roles: ['patient', 'caregiver']
-  },
-  {
-    title: 'AI Assessment',
-    url: '/ai-assessment',
-    icon: Brain,
-    description: 'Risk evaluation',
-    roles: ['patient', 'caregiver', 'provider']
-  },
-  {
-    title: 'Devices',
-    url: '/devices',
-    icon: Activity,
-    description: 'Connected health devices',
-    roles: ['patient', 'caregiver', 'provider']
-  },
-  {
-    title: 'Sustainability',
-    url: '/sustainability',
-    icon: Leaf,
-    description: 'Green health choices',
-    roles: ['patient', 'caregiver', 'provider']
-  },
-  {
-    title: 'Patients',
-    url: '/patients',
-    icon: Users,
-    description: 'Patient management',
-    roles: ['caregiver', 'provider']
-  },
-  {
-    title: 'Analytics',
-    url: '/analytics',
-    icon: BarChart3,
-    description: 'Health insights',
-    roles: ['provider']
-  }
-];
+// Persona-specific navigation with priority ordering
+const getPersonaNavigationItems = (persona: string): NavigationItem[] => {
+  const allItems = {
+    dashboard: {
+      title: 'Dashboard',
+      url: '/dashboard',
+      icon: Home,
+      description: 'Main overview',
+      roles: ['patient', 'caregiver', 'provider']
+    },
+    compassionate: {
+      title: 'Compassionate Care',
+      url: '/compassionate-care',
+      icon: Sparkles,
+      description: 'AI companion & support',
+      roles: ['patient', 'caregiver', 'provider']
+    },
+    health: {
+      title: 'Health Metrics',
+      url: '/health',
+      icon: Heart,
+      description: 'Vital signs and trends',
+      roles: ['patient', 'caregiver', 'provider']
+    },
+    medication: {
+      title: 'Medications',
+      url: '/medications',
+      icon: Activity,
+      description: 'Smart reminders & tracking',
+      roles: ['patient', 'caregiver', 'provider']
+    },
+    family: {
+      title: 'Family Circle',
+      url: '/family',
+      icon: MessageSquare,
+      description: 'Family messaging & care',
+      roles: ['patient', 'caregiver']
+    },
+    appointments: {
+      title: 'Appointments',
+      url: '/appointments',
+      icon: Calendar,
+      description: 'Schedule management',
+      roles: ['patient', 'caregiver', 'provider']
+    },
+    mood: {
+      title: 'Mood & Wellness',
+      url: '/mood',
+      icon: Brain,
+      description: 'Mental health tracking',
+      roles: ['patient', 'caregiver']
+    },
+    patients: {
+      title: 'Patient Panel',
+      url: '/patients',
+      icon: Users,
+      description: 'Patient management',
+      roles: ['caregiver', 'provider']
+    },
+    alerts: {
+      title: 'Clinical Alerts',
+      url: '/alerts',
+      icon: AlertTriangle,
+      description: 'Urgent notifications',
+      roles: ['caregiver', 'provider']
+    },
+    risk: {
+      title: 'Risk Assessment',
+      url: '/ai-assessment',
+      icon: Brain,
+      description: 'AI-powered insights',
+      roles: ['provider']
+    },
+    telehealth: {
+      title: 'Telehealth',
+      url: '/telehealth',
+      icon: Stethoscope,
+      description: 'Virtual consultations',
+      roles: ['patient', 'caregiver', 'provider']
+    },
+    analytics: {
+      title: 'Population Analytics',
+      url: '/analytics',
+      icon: BarChart3,
+      description: 'Health insights & trends',
+      roles: ['provider']
+    },
+    devices: {
+      title: 'Connected Devices',
+      url: '/devices',
+      icon: Activity,
+      description: 'Health monitoring devices',
+      roles: ['patient', 'caregiver', 'provider']
+    },
+    sustainability: {
+      title: 'Sustainability',
+      url: '/sustainability',
+      icon: Leaf,
+      description: 'Green health choices',
+      roles: ['patient', 'caregiver', 'provider']
+    },
+    community: {
+      title: 'Community',
+      url: '/community',
+      icon: MessageSquare,
+      description: 'Support network',
+      roles: ['patient', 'caregiver']
+    }
+  };
+
+  // Persona-specific priority ordering
+  const personaOrder = {
+    patient: [
+      'dashboard', 'compassionate', 'health', 'medication', 'family', 
+      'appointments', 'mood', 'telehealth', 'devices', 'sustainability', 'community'
+    ],
+    caregiver: [
+      'dashboard', 'patients', 'alerts', 'health', 'medication', 'family',
+      'compassionate', 'appointments', 'telehealth', 'mood', 'devices', 'sustainability'
+    ],
+    provider: [
+      'dashboard', 'patients', 'alerts', 'risk', 'analytics', 'telehealth',
+      'appointments', 'health', 'compassionate', 'devices', 'sustainability'
+    ]
+  };
+
+  const order = personaOrder[persona as keyof typeof personaOrder] || personaOrder.patient;
+  
+  return order.map(key => allItems[key as keyof typeof allItems]).filter(item => 
+    item && (!item.roles || item.roles.includes(persona))
+  );
+};
 
 const supportItems: NavigationItem[] = [
   {
@@ -152,7 +206,7 @@ export function AppSidebar() {
   const filterItemsByRole = (items: NavigationItem[]) => 
     items.filter(item => !item.roles || item.roles.includes(currentPersona));
 
-  const filteredMainItems = filterItemsByRole(navigationItems);
+  const filteredMainItems = getPersonaNavigationItems(currentPersona);
   const filteredSupportItems = filterItemsByRole(supportItems);
 
   return (
