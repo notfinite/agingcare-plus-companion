@@ -132,13 +132,45 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
+      // Check if mediaDevices is available
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('MediaDevices API not supported');
+      }
+
+      let stream;
+      
+      // Try with enhanced audio constraints first
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
+      } catch (enhancedError) {
+        console.log('Enhanced audio constraints failed, trying basic audio:', enhancedError);
+        
+        // Fallback to basic audio constraints
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } catch (basicError) {
+          console.log('Basic audio failed, checking available devices:', basicError);
+          
+          // Check if any audio input devices are available
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const audioInputs = devices.filter(device => device.kind === 'audioinput');
+          
+          if (audioInputs.length === 0) {
+            throw new Error('No audio input devices found');
+          }
+          
+          // Try with the first available audio input device
+          stream = await navigator.mediaDevices.getUserMedia({ 
+            audio: { deviceId: audioInputs[0].deviceId }
+          });
         }
-      });
+      }
       
       mediaRecorderRef.current = new MediaRecorder(stream);
       audioChunksRef.current = [];
@@ -166,15 +198,17 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
       let errorMessage = "Could not access microphone";
       
       if (error.name === 'NotAllowedError') {
-        errorMessage = "Microphone access denied. Please allow microphone access and try again.";
-      } else if (error.name === 'NotFoundError') {
-        errorMessage = "No microphone found. Please check your device and try again.";
-      } else if (error.name === 'NotSupportedError') {
-        errorMessage = "Audio recording not supported on this device.";
+        errorMessage = "Microphone access denied. Please allow microphone access in your browser settings and try again.";
+      } else if (error.name === 'NotFoundError' || error.message.includes('No audio input devices')) {
+        errorMessage = "No microphone found. Please connect a microphone and refresh the page.";
+      } else if (error.name === 'NotSupportedError' || error.message.includes('MediaDevices API not supported')) {
+        errorMessage = "Audio recording not supported on this device or browser.";
+      } else if (error.name === 'NotReadableError') {
+        errorMessage = "Microphone is being used by another application. Please close other apps and try again.";
       }
       
       toast({
-        title: "Error",
+        title: "Microphone Error",
         description: errorMessage,
         variant: "destructive",
       });
