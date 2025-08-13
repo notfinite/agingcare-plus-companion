@@ -70,6 +70,10 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
     setIsLoading(true);
 
     try {
+      console.log('🤖 Sending message to AI Health Assistant:', messageText);
+      console.log('🤖 User role:', userRole);
+      console.log('🤖 Context:', context);
+      
       const { data, error } = await supabase.functions.invoke('ai-health-assistant', {
         body: {
           message: messageText,
@@ -78,7 +82,18 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
         }
       });
 
-      if (error) throw error;
+      console.log('🤖 Raw response data:', data);
+      console.log('🤖 Raw response error:', error);
+
+      if (error) {
+        console.error('🤖 Edge function error:', error);
+        throw error;
+      }
+
+      if (!data || !data.response) {
+        console.error('🤖 No response data received:', data);
+        throw new Error('No response received from AI assistant');
+      }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
