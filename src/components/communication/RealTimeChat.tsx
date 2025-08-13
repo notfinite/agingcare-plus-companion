@@ -252,7 +252,12 @@ export const RealTimeChat = () => {
   };
 
   if (loading) {
-    return <div>Loading conversations...</div>;
+    return (
+      <div className="flex items-center justify-center h-[600px] space-x-2">
+        <div className="animate-spin h-5 w-5 border-2 border-primary/20 border-t-primary rounded-full"></div>
+        <span>Connecting you with your care team...</span>
+      </div>
+    );
   }
 
   return (

@@ -234,7 +234,12 @@ export const ValueBasedCareHub = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center p-8">Loading value-based care metrics...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center p-8 space-y-3">
+        <div className="animate-spin h-6 w-6 border-2 border-primary/20 border-t-primary rounded-full"></div>
+        <p className="text-sm text-muted-foreground">Gathering your care insights...</p>
+      </div>
+    );
   }
 
   return (

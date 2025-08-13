@@ -226,7 +226,12 @@ export const PatientEducationHub = () => {
   const inProgressResources = Object.values(progress).filter(p => p.status === 'in_progress').length;
 
   if (loading) {
-    return <div>Loading education resources...</div>;
+    return (
+      <div className="flex items-center justify-center p-8 space-x-2">
+        <div className="animate-spin h-5 w-5 border-2 border-primary/20 border-t-primary rounded-full"></div>
+        <span>Preparing your personalized learning materials...</span>
+      </div>
+    );
   }
 
   return (

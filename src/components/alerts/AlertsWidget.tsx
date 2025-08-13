@@ -123,7 +123,10 @@ export const AlertsWidget = () => {
           <CardTitle className="text-accessible-lg">Alerts & Notifications</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8">Loading alerts...</div>
+          <div className="text-center py-8 flex items-center justify-center gap-2">
+            <div className="animate-spin h-4 w-4 border-2 border-primary/20 border-t-primary rounded-full"></div>
+            Checking for important updates...
+          </div>
         </CardContent>
       </Card>
     );

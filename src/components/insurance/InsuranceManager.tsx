@@ -201,7 +201,12 @@ export const InsuranceManager = () => {
   };
 
   if (loading) {
-    return <div>Loading insurance information...</div>;
+    return (
+      <div className="flex items-center justify-center p-8 space-x-2">
+        <div className="animate-spin h-5 w-5 border-2 border-primary/20 border-t-primary rounded-full"></div>
+        <span>Securely retrieving your coverage details...</span>
+      </div>
+    );
   }
 
   return (

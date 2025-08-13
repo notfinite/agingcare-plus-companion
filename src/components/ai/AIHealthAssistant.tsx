@@ -364,7 +364,7 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
                 <Bot className="h-4 w-4 text-primary animate-pulse" />
               </div>
               <div className="bg-muted p-3 rounded-lg">
-                <p className="text-sm animate-pulse">Thinking...</p>
+                <p className="text-sm animate-pulse">Analyzing your health question... 🔍</p>
               </div>
             </div>
           )}
