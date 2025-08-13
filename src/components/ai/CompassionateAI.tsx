@@ -195,24 +195,41 @@ export const CompassionateAI = () => {
 
     // Now get enhanced response from our compassionate AI edge function
     try {
-      console.log('Sending message to compassionate AI:', currentMessage);
+      console.log('🚀 Sending message to compassionate AI:', currentMessage);
+      console.log('📊 Supabase client exists:', !!supabase);
+      console.log('🔧 Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+      console.log('🔧 Supabase Key exists:', !!import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
+      console.log('🔧 Current messages for context:', messages.length);
+      
+      // Test supabase connection first
+      const { data: connectionTest, error: connectionError } = await supabase
+        .from('profiles')
+        .select('count')
+        .limit(1);
+      
+      console.log('🔗 Supabase connection test:', { connectionTest, connectionError });
+      
+      const requestBody = {
+        message: currentMessage,
+        conversationHistory: messages.map(msg => ({
+          role: msg.sender === 'user' ? 'user' : 'assistant',
+          content: msg.content
+        })),
+        userContext: {
+          emotionalState: emotion,
+          timestamp: new Date().toISOString(),
+          source: 'compassionate_dashboard'
+        }
+      };
+      
+      console.log('📦 Request body:', JSON.stringify(requestBody, null, 2));
       
       const { data, error } = await supabase.functions.invoke('compassionate-ai', {
-        body: {
-          message: currentMessage,
-          conversationHistory: messages.map(msg => ({
-            role: msg.sender === 'user' ? 'user' : 'assistant',
-            content: msg.content
-          })),
-          userContext: {
-            emotionalState: emotion,
-            timestamp: new Date().toISOString(),
-            source: 'compassionate_dashboard'
-          }
-        }
+        body: requestBody
       });
 
-      console.log('AI Response:', data);
+      console.log('📨 Raw AI Response:', data);
+      console.log('❌ Raw Error:', error);
 
       if (error) {
         console.error('Edge function error:', error);
