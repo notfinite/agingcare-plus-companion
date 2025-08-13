@@ -202,12 +202,19 @@ export const CompassionateAI = () => {
       console.log('🔧 Current messages for context:', messages.length);
       
       // Test supabase connection first
-      const { data: connectionTest, error: connectionError } = await supabase
-        .from('profiles')
-        .select('count')
-        .limit(1);
+      try {
+        console.log('🔗 Testing Supabase connection...');
+        const { data: connectionTest, error: connectionError } = await supabase
+          .from('profiles')
+          .select('count')
+          .limit(1);
+        
+        console.log('🔗 Supabase connection test result:', { connectionTest, connectionError });
+      } catch (connErr) {
+        console.error('🔗 Supabase connection test failed:', connErr);
+      }
       
-      console.log('🔗 Supabase connection test:', { connectionTest, connectionError });
+      console.log('📞 Attempting to invoke edge function...');
       
       const requestBody = {
         message: currentMessage,
@@ -224,12 +231,17 @@ export const CompassionateAI = () => {
       
       console.log('📦 Request body:', JSON.stringify(requestBody, null, 2));
       
+      const invokeStart = Date.now();
       const { data, error } = await supabase.functions.invoke('compassionate-ai', {
         body: requestBody
       });
+      const invokeEnd = Date.now();
+      
+      console.log(`⏱️ Function invoke took ${invokeEnd - invokeStart}ms`);
 
       console.log('📨 Raw AI Response:', data);
       console.log('❌ Raw Error:', error);
+      console.log('🔍 Error type:', typeof error, Object.keys(error || {}));
 
       if (error) {
         console.error('Edge function error:', error);
