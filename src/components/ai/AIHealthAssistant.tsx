@@ -137,26 +137,22 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
         throw new Error('MediaDevices API not supported');
       }
 
-      // First, check if any audio input devices are available
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const audioInputs = devices.filter(device => device.kind === 'audioinput');
-      
-      if (audioInputs.length === 0) {
-        throw new Error('No microphone devices found on this device');
-      }
-
-      // Try to get microphone access
+      // Try to get microphone access first (this will trigger permission request)
       let stream;
       try {
         stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      } catch (basicError) {
-        // If basic fails, try with specific device
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({ 
-            audio: { deviceId: audioInputs[0].deviceId }
-          });
-        } catch (deviceError) {
-          throw basicError; // Throw the original error
+      } catch (error: any) {
+        // Handle specific error types
+        if (error.name === 'NotAllowedError') {
+          throw new Error('Microphone access denied. Please allow microphone access and try again.');
+        } else if (error.name === 'NotFoundError') {
+          throw new Error('No microphone found. Please connect a microphone and try again.');
+        } else if (error.name === 'NotReadableError') {
+          throw new Error('Microphone is being used by another application.');
+        } else if (error.name === 'OverconstrainedError') {
+          throw new Error('Microphone constraints not supported.');
+        } else {
+          throw new Error('Could not access microphone. Please check your device settings.');
         }
       }
       
