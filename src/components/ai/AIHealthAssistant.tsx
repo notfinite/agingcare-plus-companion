@@ -235,7 +235,7 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
   };
 
   return (
-    <Card className="h-[600px] flex flex-col">
+    <Card className="flex flex-col h-full max-h-[600px]">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2">
           <Bot className="h-6 w-6 text-primary" />
@@ -254,7 +254,7 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
       
       <CardContent className="flex-1 flex flex-col">
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
+        <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2 min-h-0">
           {messages.map((message) => (
             <div
               key={message.id}
