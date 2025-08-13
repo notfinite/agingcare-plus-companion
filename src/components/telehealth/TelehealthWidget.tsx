@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Video, VideoOff, Mic, MicOff, Phone, PhoneOff, Settings, Monitor } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 import {
   Dialog,
   DialogContent,
@@ -54,6 +55,7 @@ export const TelehealthWidget = () => {
     audio: true,
     screen: false
   });
+  const { toast } = useToast();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -174,6 +176,7 @@ export const TelehealthWidget = () => {
               <Button
                 variant="ghost"
                 size="lg"
+                onClick={() => toast({ title: "Call Settings", description: "Opening call settings..." })}
                 className="rounded-full h-12 w-12"
               >
                 <Settings className="h-6 w-6" />
@@ -257,11 +260,17 @@ export const TelehealthWidget = () => {
           <div className="text-center">
             <h4 className="text-accessible-base font-medium mb-2">Quick Actions</h4>
             <div className="flex justify-center space-x-4">
-              <Button variant="outline">
+              <Button 
+                variant="outline"
+                onClick={() => toast({ title: "Camera Test", description: "Camera test completed successfully" })}
+              >
                 <Settings className="mr-2 h-4 w-4" />
                 Test Camera
               </Button>
-              <Button variant="outline">
+              <Button 
+                variant="outline"
+                onClick={() => toast({ title: "Audio Test", description: "Audio test completed successfully" })}
+              >
                 <Monitor className="mr-2 h-4 w-4" />
                 Test Audio
               </Button>

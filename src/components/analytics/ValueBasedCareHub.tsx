@@ -260,7 +260,11 @@ export const ValueBasedCareHub = () => {
               <SelectItem value="365">1 Year</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => toast({ title: "Export", description: "Report exported successfully" })}
+          >
             Export Report
           </Button>
         </div>

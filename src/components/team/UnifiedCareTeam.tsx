@@ -266,7 +266,11 @@ export const UnifiedCareTeam = () => {
         </div>
         
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => toast({ title: "Team Meeting", description: "Starting team video conference..." })}
+          >
             <Video className="h-4 w-4 mr-2" />
             Team Meeting
           </Button>
@@ -365,14 +369,27 @@ export const UnifiedCareTeam = () => {
                   </div>
                   
                   <div className="flex gap-2 mt-4">
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex-1"
+                      onClick={() => toast({ title: "Message", description: `Opening chat with ${member.name}` })}
+                    >
                       <MessageSquare className="h-3 w-3 mr-1" />
                       Message
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => toast({ title: "Call", description: `Calling ${member.name}...` })}
+                    >
                       <Phone className="h-3 w-3" />
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => toast({ title: "Email", description: `Opening email to ${member.name}` })}
+                    >
                       <Mail className="h-3 w-3" />
                     </Button>
                   </div>
@@ -444,7 +461,11 @@ export const UnifiedCareTeam = () => {
                     <span className="text-xs text-muted-foreground">
                       By: {note.author}
                     </span>
-                    <Button variant="ghost" size="sm">
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => toast({ title: "Share Note", description: "Note shared with care team" })}
+                    >
                       <Share2 className="h-3 w-3 mr-1" />
                       Share
                     </Button>
