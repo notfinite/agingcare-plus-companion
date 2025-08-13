@@ -119,6 +119,402 @@ export type Database = {
           },
         ]
       }
+      clinical_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          alert_type: string
+          created_at: string
+          description: string | null
+          id: string
+          is_acknowledged: boolean | null
+          patient_id: string
+          provider_id: string | null
+          recommendation: string | null
+          severity: string
+          title: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_acknowledged?: boolean | null
+          patient_id: string
+          provider_id?: string | null
+          recommendation?: string | null
+          severity: string
+          title: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          alert_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_acknowledged?: boolean | null
+          patient_id?: string
+          provider_id?: string | null
+          recommendation?: string | null
+          severity?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_alerts_acknowledged_by_fkey"
+            columns: ["acknowledged_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_alerts_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_alerts_provider_id_fkey"
+            columns: ["provider_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clinical_guidelines: {
+        Row: {
+          condition: string
+          created_at: string
+          description: string | null
+          evidence_level: string | null
+          guideline_title: string
+          id: string
+          last_updated: string | null
+          recommendations: Json
+          source: string | null
+          version: string | null
+        }
+        Insert: {
+          condition: string
+          created_at?: string
+          description?: string | null
+          evidence_level?: string | null
+          guideline_title: string
+          id?: string
+          last_updated?: string | null
+          recommendations: Json
+          source?: string | null
+          version?: string | null
+        }
+        Update: {
+          condition?: string
+          created_at?: string
+          description?: string | null
+          evidence_level?: string | null
+          guideline_title?: string
+          id?: string
+          last_updated?: string | null
+          recommendations?: Json
+          source?: string | null
+          version?: string | null
+        }
+        Relationships: []
+      }
+      connected_devices: {
+        Row: {
+          brand: string | null
+          created_at: string
+          device_id: string | null
+          device_type: string
+          id: string
+          is_active: boolean | null
+          last_sync: string | null
+          model: string | null
+          patient_id: string
+          sync_frequency_hours: number | null
+        }
+        Insert: {
+          brand?: string | null
+          created_at?: string
+          device_id?: string | null
+          device_type: string
+          id?: string
+          is_active?: boolean | null
+          last_sync?: string | null
+          model?: string | null
+          patient_id: string
+          sync_frequency_hours?: number | null
+        }
+        Update: {
+          brand?: string | null
+          created_at?: string
+          device_id?: string | null
+          device_type?: string
+          id?: string
+          is_active?: boolean | null
+          last_sync?: string | null
+          model?: string | null
+          patient_id?: string
+          sync_frequency_hours?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connected_devices_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversation_participants: {
+        Row: {
+          conversation_id: string
+          id: string
+          joined_at: string
+          last_read_at: string | null
+          role: string
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          id?: string
+          joined_at?: string
+          last_read_at?: string | null
+          role: string
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          id?: string
+          joined_at?: string
+          last_read_at?: string | null
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_participants_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          created_at: string
+          id: string
+          title: string | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          title?: string | null
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          title?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      education_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          name: string
+          sort_order: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name: string
+          sort_order?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          name?: string
+          sort_order?: number | null
+        }
+        Relationships: []
+      }
+      education_resources: {
+        Row: {
+          category_id: string
+          content: string | null
+          created_at: string
+          description: string | null
+          difficulty_level: string
+          estimated_read_time: number | null
+          id: string
+          is_featured: boolean | null
+          resource_type: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          view_count: number | null
+        }
+        Insert: {
+          category_id: string
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          difficulty_level: string
+          estimated_read_time?: number | null
+          id?: string
+          is_featured?: boolean | null
+          resource_type: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          view_count?: number | null
+        }
+        Update: {
+          category_id?: string
+          content?: string | null
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string
+          estimated_read_time?: number | null
+          id?: string
+          is_featured?: boolean | null
+          resource_type?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          view_count?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "education_resources_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "education_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      emergency_contacts: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          is_primary: boolean | null
+          name: string
+          patient_id: string
+          phone_number: string
+          priority_order: number | null
+          relationship: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_primary?: boolean | null
+          name: string
+          patient_id: string
+          phone_number: string
+          priority_order?: number | null
+          relationship: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_primary?: boolean | null
+          name?: string
+          patient_id?: string
+          phone_number?: string
+          priority_order?: number | null
+          relationship?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_contacts_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      emergency_incidents: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          incident_type: string
+          location_data: Json | null
+          patient_id: string
+          resolved_at: string | null
+          responders_notified: string[] | null
+          response_time_seconds: number | null
+          severity: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          incident_type: string
+          location_data?: Json | null
+          patient_id: string
+          resolved_at?: string | null
+          responders_notified?: string[] | null
+          response_time_seconds?: number | null
+          severity: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          incident_type?: string
+          location_data?: Json | null
+          patient_id?: string
+          resolved_at?: string | null
+          responders_notified?: string[] | null
+          response_time_seconds?: number | null
+          severity?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_incidents_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       health_metrics: {
         Row: {
           created_at: string
@@ -165,6 +561,96 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      insurance_claims: {
+        Row: {
+          billed_amount: number | null
+          claim_details: Json | null
+          claim_number: string
+          covered_amount: number | null
+          created_at: string
+          id: string
+          insurance_provider_id: string
+          patient_id: string
+          patient_responsibility: number | null
+          provider_name: string | null
+          service_date: string
+          service_description: string | null
+          status: string
+        }
+        Insert: {
+          billed_amount?: number | null
+          claim_details?: Json | null
+          claim_number: string
+          covered_amount?: number | null
+          created_at?: string
+          id?: string
+          insurance_provider_id: string
+          patient_id: string
+          patient_responsibility?: number | null
+          provider_name?: string | null
+          service_date: string
+          service_description?: string | null
+          status?: string
+        }
+        Update: {
+          billed_amount?: number | null
+          claim_details?: Json | null
+          claim_number?: string
+          covered_amount?: number | null
+          created_at?: string
+          id?: string
+          insurance_provider_id?: string
+          patient_id?: string
+          patient_responsibility?: number | null
+          provider_name?: string | null
+          service_date?: string
+          service_description?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insurance_claims_insurance_provider_id_fkey"
+            columns: ["insurance_provider_id"]
+            isOneToOne: false
+            referencedRelation: "insurance_providers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "insurance_claims_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insurance_providers: {
+        Row: {
+          contact_info: Json | null
+          coverage_details: Json | null
+          created_at: string
+          id: string
+          name: string
+          type: string
+        }
+        Insert: {
+          contact_info?: Json | null
+          coverage_details?: Json | null
+          created_at?: string
+          id?: string
+          name: string
+          type: string
+        }
+        Update: {
+          contact_info?: Json | null
+          coverage_details?: Json | null
+          created_at?: string
+          id?: string
+          name?: string
+          type?: string
+        }
+        Relationships: []
       }
       medication_logs: {
         Row: {
@@ -284,6 +770,165 @@ export type Database = {
           {
             foreignKeyName: "medication_schedules_prescriber_id_fkey"
             columns: ["prescriber_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          is_urgent: boolean | null
+          message_type: string
+          metadata: Json | null
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          is_urgent?: boolean | null
+          message_type?: string
+          metadata?: Json | null
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          is_urgent?: boolean | null
+          message_type?: string
+          metadata?: Json | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patient_education_progress: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          patient_id: string
+          progress_percentage: number | null
+          resource_id: string
+          status: string
+          time_spent_minutes: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          patient_id: string
+          progress_percentage?: number | null
+          resource_id: string
+          status?: string
+          time_spent_minutes?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          patient_id?: string
+          progress_percentage?: number | null
+          resource_id?: string
+          status?: string
+          time_spent_minutes?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_education_progress_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "patient_education_progress_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "education_resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patient_insurance: {
+        Row: {
+          copay_amount: number | null
+          coverage_end: string | null
+          coverage_start: string | null
+          created_at: string
+          deductible_amount: number | null
+          group_number: string | null
+          id: string
+          insurance_provider_id: string
+          is_primary: boolean | null
+          member_id: string | null
+          out_of_pocket_max: number | null
+          patient_id: string
+          policy_number: string
+        }
+        Insert: {
+          copay_amount?: number | null
+          coverage_end?: string | null
+          coverage_start?: string | null
+          created_at?: string
+          deductible_amount?: number | null
+          group_number?: string | null
+          id?: string
+          insurance_provider_id: string
+          is_primary?: boolean | null
+          member_id?: string | null
+          out_of_pocket_max?: number | null
+          patient_id: string
+          policy_number: string
+        }
+        Update: {
+          copay_amount?: number | null
+          coverage_end?: string | null
+          coverage_start?: string | null
+          created_at?: string
+          deductible_amount?: number | null
+          group_number?: string | null
+          id?: string
+          insurance_provider_id?: string
+          is_primary?: boolean | null
+          member_id?: string | null
+          out_of_pocket_max?: number | null
+          patient_id?: string
+          policy_number?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_insurance_insurance_provider_id_fkey"
+            columns: ["insurance_provider_id"]
+            isOneToOne: false
+            referencedRelation: "insurance_providers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "patient_insurance_patient_id_fkey"
+            columns: ["patient_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
