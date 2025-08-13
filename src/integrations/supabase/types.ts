@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_conversations: {
+        Row: {
+          conversation_type: string
+          created_at: string
+          id: string
+          messages: Json
+          sentiment_analysis: Json | null
+          session_duration_minutes: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          conversation_type?: string
+          created_at?: string
+          id?: string
+          messages?: Json
+          sentiment_analysis?: Json | null
+          session_duration_minutes?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          conversation_type?: string
+          created_at?: string
+          id?: string
+          messages?: Json
+          sentiment_analysis?: Json | null
+          session_duration_minutes?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       alerts: {
         Row: {
           acknowledged_at: string | null
@@ -515,6 +548,48 @@ export type Database = {
           },
         ]
       }
+      family_connections: {
+        Row: {
+          connection_status: string | null
+          created_at: string
+          email: string | null
+          emergency_contact: boolean | null
+          family_member_id: string | null
+          id: string
+          name: string
+          notification_preferences: Json | null
+          patient_id: string
+          phone: string | null
+          relationship: string
+        }
+        Insert: {
+          connection_status?: string | null
+          created_at?: string
+          email?: string | null
+          emergency_contact?: boolean | null
+          family_member_id?: string | null
+          id?: string
+          name: string
+          notification_preferences?: Json | null
+          patient_id: string
+          phone?: string | null
+          relationship: string
+        }
+        Update: {
+          connection_status?: string | null
+          created_at?: string
+          email?: string | null
+          emergency_contact?: boolean | null
+          family_member_id?: string | null
+          id?: string
+          name?: string
+          notification_preferences?: Json | null
+          patient_id?: string
+          phone?: string | null
+          relationship?: string
+        }
+        Relationships: []
+      }
       health_metrics: {
         Row: {
           created_at: string
@@ -823,6 +898,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      mood_entries: {
+        Row: {
+          coping_strategies: Json | null
+          created_at: string
+          id: string
+          mood_score: number
+          mood_type: string
+          notes: string | null
+          patient_id: string
+          recorded_at: string
+          triggers: Json | null
+        }
+        Insert: {
+          coping_strategies?: Json | null
+          created_at?: string
+          id?: string
+          mood_score: number
+          mood_type: string
+          notes?: string | null
+          patient_id: string
+          recorded_at?: string
+          triggers?: Json | null
+        }
+        Update: {
+          coping_strategies?: Json | null
+          created_at?: string
+          id?: string
+          mood_score?: number
+          mood_type?: string
+          notes?: string | null
+          patient_id?: string
+          recorded_at?: string
+          triggers?: Json | null
+        }
+        Relationships: []
       }
       patient_education_progress: {
         Row: {
@@ -1257,6 +1368,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      voice_settings: {
+        Row: {
+          accessibility_features: Json | null
+          created_at: string
+          id: string
+          preferred_voice: string | null
+          speech_rate: number | null
+          updated_at: string
+          user_id: string
+          voice_enabled: boolean | null
+          voice_language: string | null
+        }
+        Insert: {
+          accessibility_features?: Json | null
+          created_at?: string
+          id?: string
+          preferred_voice?: string | null
+          speech_rate?: number | null
+          updated_at?: string
+          user_id: string
+          voice_enabled?: boolean | null
+          voice_language?: string | null
+        }
+        Update: {
+          accessibility_features?: Json | null
+          created_at?: string
+          id?: string
+          preferred_voice?: string | null
+          speech_rate?: number | null
+          updated_at?: string
+          user_id?: string
+          voice_enabled?: boolean | null
+          voice_language?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {

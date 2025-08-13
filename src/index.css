@@ -51,12 +51,22 @@
     --emergency: 0 93% 58%;
     --emergency-foreground: 0 0% 100%;
 
+    /* Compassionate color palette */
+    --compassion-primary: 280 65% 68%;     /* Warm purple */
+    --compassion-secondary: 340 65% 75%;   /* Soft pink */
+    --compassion-heart: 0 70% 70%;         /* Gentle red */
+    --compassion-calm: 200 70% 70%;        /* Peaceful blue */
+    --compassion-healing: 160 60% 65%;     /* Soothing green */
+    --compassion-warm: 30 85% 70%;         /* Warm amber */
+    --compassion-gentle: 220 20% 95%;      /* Very light background */
+
     /* Beautiful gradients */
     --gradient-primary: linear-gradient(135deg, hsl(214 84% 56%), hsl(214 100% 70%));
     --gradient-secondary: linear-gradient(135deg, hsl(184 77% 52%), hsl(184 100% 70%));
     --gradient-hero: linear-gradient(135deg, hsl(214 84% 56%) 0%, hsl(184 77% 52%) 100%);
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(210 40% 99%) 100%);
     --gradient-success: linear-gradient(135deg, hsl(142 76% 58%), hsl(142 100% 70%));
+    --gradient-compassion: linear-gradient(135deg, hsl(280 65% 68%), hsl(340 65% 75%));
     
     /* Premium shadows */
     --shadow-elegant: 0 10px 30px -5px hsl(214 84% 56% / 0.2);
@@ -226,6 +236,54 @@
   .text-accessible-lg { font-size: 1.25rem; line-height: 1.7; font-weight: 600; }
   .text-accessible-xl { font-size: 1.5rem; line-height: 1.8; font-weight: 600; }
   .text-accessible-2xl { font-size: 2rem; line-height: 1.9; font-weight: 700; }
+
+  /* Compassionate design components */
+  .text-compassion-primary { color: hsl(var(--compassion-primary)); }
+  .text-compassion-secondary { color: hsl(var(--compassion-secondary)); }
+  .text-compassion-heart { color: hsl(var(--compassion-heart)); }
+  .text-compassion-calm { color: hsl(var(--compassion-calm)); }
+  .text-compassion-healing { color: hsl(var(--compassion-healing)); }
+  .text-compassion-warm { color: hsl(var(--compassion-warm)); }
+
+  .bg-compassion-primary { background-color: hsl(var(--compassion-primary)); }
+  .bg-compassion-secondary { background-color: hsl(var(--compassion-secondary)); }
+  .bg-compassion-gentle { background-color: hsl(var(--compassion-gentle)); }
+  .bg-gradient-compassion { background: var(--gradient-compassion); }
+
+  .card-compassionate {
+    @apply bg-white/90 backdrop-blur-sm shadow-card border border-white/20
+           hover:shadow-elegant transition-smooth hover:-translate-y-0.5;
+  }
+
+  .hover-gentle {
+    @apply transition-smooth hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  /* Breathing animation for compassionate elements */
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .animate-breathe {
+    animation: breathe 3s ease-in-out infinite;
+  }
+
+  /* Fade in up animation */
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out;
+  }
 
   /* Premium button variants */
   .btn-gradient-primary {

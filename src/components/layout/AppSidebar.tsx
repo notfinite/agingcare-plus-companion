@@ -13,7 +13,8 @@ import {
   Stethoscope,
   UserPlus,
   BarChart3,
-  Leaf
+  Leaf,
+  Sparkles
 } from 'lucide-react';
 import {
   Sidebar,
@@ -41,6 +42,13 @@ const navigationItems: NavigationItem[] = [
     url: '/dashboard',
     icon: Home,
     description: 'Main overview',
+    roles: ['patient', 'caregiver', 'provider']
+  },
+  {
+    title: 'Compassionate Care',
+    url: '/compassionate-care',
+    icon: Sparkles,
+    description: 'AI companion & support',
     roles: ['patient', 'caregiver', 'provider']
   },
   {

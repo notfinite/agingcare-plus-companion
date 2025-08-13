@@ -15,6 +15,7 @@ import { CommunityHub } from "@/components/community/CommunityHub";
 import { AIRiskAssessment } from "@/components/ai/AIRiskAssessment";
 import { DeviceIntegration } from "@/components/devices/DeviceIntegration";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
+import CompassionateCare from "./pages/CompassionateCare";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/telehealth" element={<Telehealth />} />
             <Route path="/appointments" element={<Appointments />} />
             <Route path="/sustainability" element={<Sustainability />} />
+            <Route path="/compassionate-care" element={<CompassionateCare />} />
             <Route path="/community" element={<CommunityHub />} />
             <Route path="/ai-assessment" element={<AIRiskAssessment />} />
             <Route path="/devices" element={<DeviceIntegration />} />
