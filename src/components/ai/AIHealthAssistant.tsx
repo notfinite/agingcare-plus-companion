@@ -134,25 +134,44 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
     try {
       // Check if mediaDevices is available
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error('MediaDevices API not supported');
+        throw new Error('MediaDevices API not supported in this browser');
       }
 
-      // Try to get microphone access first (this will trigger permission request)
+      console.log('Attempting to access microphone...');
+      
+      // Request microphone permission with minimal constraints
       let stream;
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // Try with basic audio constraints first
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true
+          }
+        });
+        console.log('Microphone access granted');
       } catch (error: any) {
-        // Handle specific error types
-        if (error.name === 'NotAllowedError') {
-          throw new Error('Microphone access denied. Please allow microphone access and try again.');
-        } else if (error.name === 'NotFoundError') {
-          throw new Error('No microphone found. Please connect a microphone and try again.');
-        } else if (error.name === 'NotReadableError') {
-          throw new Error('Microphone is being used by another application.');
-        } else if (error.name === 'OverconstrainedError') {
-          throw new Error('Microphone constraints not supported.');
-        } else {
-          throw new Error('Could not access microphone. Please check your device settings.');
+        console.error('getUserMedia error:', error);
+        
+        // Try fallback with no constraints
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          console.log('Microphone access granted with fallback');
+        } catch (fallbackError: any) {
+          console.error('Fallback getUserMedia error:', fallbackError);
+          
+          // Handle specific error types with more helpful messages
+          if (fallbackError.name === 'NotAllowedError') {
+            throw new Error('Please click "Allow" when your browser asks for microphone permission.');
+          } else if (fallbackError.name === 'NotFoundError') {
+            throw new Error('No microphone detected. Please check that your microphone is connected and enabled in your system settings.');
+          } else if (fallbackError.name === 'NotReadableError') {
+            throw new Error('Microphone is busy. Please close other apps using your microphone and try again.');
+          } else if (fallbackError.name === 'OverconstrainedError') {
+            throw new Error('Your microphone doesn\'t support the required settings.');
+          } else {
+            throw new Error(`Microphone error: ${fallbackError.message}. Please check your browser and system microphone settings.`);
+          }
         }
       }
       
