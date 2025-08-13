@@ -167,7 +167,7 @@ export const CompassionateDashboard = () => {
         <div className="flex justify-center gap-4">
           <Button 
             onClick={enableCompassionateGreeting}
-            className="bg-compassion-primary hover:bg-compassion-secondary text-white px-6 py-3 rounded-full"
+            className="bg-compassion-primary hover:bg-compassion-secondary text-on-primary px-6 py-3 rounded-full"
           >
             <Heart className="h-4 w-4 mr-2" />
             Start with Care
@@ -229,19 +229,19 @@ export const CompassionateDashboard = () => {
       {/* Main Compassionate Features */}
       <Tabs defaultValue="ai-companion" className="space-y-6">
         <TabsList className="grid w-full grid-cols-4 bg-compassion-gentle">
-          <TabsTrigger value="ai-companion" className="data-[state=active]:bg-white">
+          <TabsTrigger value="ai-companion" className="data-[state=active]:bg-card data-[state=active]:text-card-foreground">
             <Brain className="h-4 w-4 mr-2" />
             AI Companion
           </TabsTrigger>
-          <TabsTrigger value="voice-accessibility" className="data-[state=active]:bg-white">
+          <TabsTrigger value="voice-accessibility" className="data-[state=active]:bg-card data-[state=active]:text-card-foreground">
             <Accessibility className="h-4 w-4 mr-2" />
             Voice Control
           </TabsTrigger>
-          <TabsTrigger value="family-connection" className="data-[state=active]:bg-white">
+          <TabsTrigger value="family-connection" className="data-[state=active]:bg-card data-[state=active]:text-card-foreground">
             <Users className="h-4 w-4 mr-2" />
             Family Care
           </TabsTrigger>
-          <TabsTrigger value="mood-wellness" className="data-[state=active]:bg-white">
+          <TabsTrigger value="mood-wellness" className="data-[state=active]:bg-card data-[state=active]:text-card-foreground">
             <Heart className="h-4 w-4 mr-2" />
             Mood & Wellness
           </TabsTrigger>
