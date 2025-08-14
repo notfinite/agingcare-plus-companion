@@ -59,6 +59,8 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
   const sendMessage = async (messageText: string) => {
     if (!messageText.trim()) return;
 
+    console.log('AIHealthAssistant: Starting sendMessage with:', messageText);
+
     const userMessage: Message = {
       id: Date.now().toString(),
       content: messageText,
@@ -71,6 +73,7 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
     setIsLoading(true);
 
     try {
+      console.log('AIHealthAssistant: About to call edge function with:', { messageText, userRole, context });
       setDebugInfo('Calling AI edge function...');
       
       // Add timeout to prevent infinite loading
@@ -88,7 +91,10 @@ export const AIHealthAssistant: React.FC<AIHealthAssistantProps> = ({
 
       const { data, error } = await Promise.race([functionCall, timeoutPromise]) as any;
 
+      console.log('AIHealthAssistant: Function response:', { data, error });
+
       if (error) {
+        console.error('AIHealthAssistant: Function error:', error);
         setDebugInfo(`Function error: ${error.message}`);
         throw error;
       }
