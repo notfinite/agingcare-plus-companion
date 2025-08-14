@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppLayout } from '@/components/layout/AppLayout';
 import { PatientListWidget } from '@/components/provider/PatientListWidget';
 import { AppointmentsWidget } from '@/components/appointments/AppointmentsWidget';
 import { ClinicalAlertsWidget } from '@/components/provider/ClinicalAlertsWidget';
@@ -10,8 +9,7 @@ import { Users, Calendar, TrendingUp, Video, AlertTriangle, Activity, Heart, Dol
 
 export const ProviderDashboard = () => {
   return (
-    <AppLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div className="text-center mb-8">
           <h2 className="text-accessible-2xl font-bold mb-2">Provider Dashboard</h2>
           <p className="text-accessible-lg text-muted-foreground">
@@ -205,7 +203,6 @@ export const ProviderDashboard = () => {
         </div>
 
         <AppointmentsWidget />
-      </div>
-    </AppLayout>
+    </div>
   );
 };

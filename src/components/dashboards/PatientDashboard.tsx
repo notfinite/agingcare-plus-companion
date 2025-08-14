@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppLayout } from '@/components/layout/AppLayout';
 import { HealthMetricsWidget } from '@/components/health/HealthMetricsWidget';
 import { MedicationWidget } from '@/components/medication/MedicationWidget';
 import { SmartMedicationReminder } from '@/components/medication/SmartMedicationReminder';
@@ -14,7 +13,7 @@ import { Heart, Activity, Pill, Calendar, Brain, TrendingUp, Target, Award, Chec
 
 export const PatientDashboard = () => {
   return (
-    <AppLayout>
+    <div className="space-y-6">
       <div className="space-y-6">
         <div className="text-center mb-8">
           <h2 className="text-accessible-2xl font-bold mb-2">Your Health Dashboard</h2>
@@ -229,6 +228,6 @@ export const PatientDashboard = () => {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </div>
   );
 };

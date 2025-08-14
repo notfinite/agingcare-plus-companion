@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppLayout } from '@/components/layout/AppLayout';
 import { PatientsOverview } from '@/components/caregiver/PatientsOverview';
 import { AlertsWidget } from '@/components/alerts/AlertsWidget';
 import { MedicationTrackingWidget } from '@/components/caregiver/MedicationTrackingWidget';
@@ -11,8 +10,7 @@ import { Users, AlertTriangle, Heart, CheckCircle, Shield, TrendingUp, Clock, St
 
 export const CaregiverDashboard = () => {
   return (
-    <AppLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         <div className="text-center mb-8">
           <h2 className="text-accessible-2xl font-bold mb-2">Caregiver Dashboard</h2>
           <p className="text-accessible-lg text-muted-foreground">
@@ -146,7 +144,6 @@ export const CaregiverDashboard = () => {
 
         {/* Actionable Insights */}
         <ActionableInsights role="caregiver" />
-      </div>
-    </AppLayout>
+    </div>
   );
 };
